@@ -52,15 +52,12 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   // throw error if id in the wrong format
   if (!projectID || !modelName) callback(new Error('The "id" parameter in the URL must be of form "projectUID::ModelGroupName"'))
 
-  /*const headDetails = {
-    "KeynetixCloud": keynetixCloud,
-    "Authorization": `Bearer ${token}`,
-    "Content-Type": contentType,
-    "InstanceId": instanceID
-  }*/
+  //${url}/boreholes/projects/${projectID}/locations
+  //${url}/data/projects/${projectID}/groups/${modelName}
 
   // 1. Construct the OpenGroundCloud API request URL
-  const requrl = `${url}/data/projects/${projectID}/groups/${modelName}`
+  //const requrl = `${url}/data/projects/${projectID}/groups/${modelName}`
+  const requrl = `${url}/boreholes/projects/${projectID}/locations`
   console.log(`\nAPI URL request: ${requrl}\n`)
 
   // 2. Make the request to the remote API
@@ -80,15 +77,18 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
     console.log(`${resp.status} Connection Successful\n`)
 
     return resp.json()
-  }).then(geojson => {
-    // Access each boring by doing geojson[i]
-    //console.log(geojson[0])
+  }).then(json => {
+    // Access each boring by doing json[i]
+    //console.log(json[0])
 
     // 4. Create Metadata
-    
+    const geojson = translate(json)
+
     const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
     geojson.metadata = { geometryType }
 
+    console.log ("Processing Complete\n")
+    //console.log(geojson)
     // 5. Fire callback
     callback(null, geojson)
   })
@@ -96,76 +96,53 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
     .catch(callback)
 }
 
-/*
-  // Make the auth request
-    var requestOptions = {
-      url: url,
-      KeynetixCloud: keynetixCloud,
-      Authorization: {
-        Bearer: token
-      },
-      "Content-Type": contentType,
-      InstanceId: instanceID
-    }
-
-
-    // Make the Account data request
-    request.get(requestOptions, (err, httpResponse, body) => {
-      if (err) return callback(err)
-
-      // Translate geojson
-      const json = translate(body)
-      json.metadata = {
-        title: 'OpenGround Cloud Koop Provider',
-        name: 'OpenGround Cloud Projects',
-        description: `Generated from ${url}`,
-        displayField: 'DataFields',
-        idField: 'Id',
-        maxRecordCount: 10000,
-      }
-
-      // Return result for serving to ArcGIS
-      callback(null, json)
-    })
+function translate (input) {
+  //console.log('Made it to translation')
+  return {
+    type: 'FeatureCollection',
+    features: input.map(formatFeature)
   }
+}
 
-  function translate (input) {
-    return {
-      type: 'FeatureCollection',
-      features: input.records ? input.records.reduce(formatFeature, [], 0) : []
-    }
-  }
+function formatFeature (inputFeature) {
+  //skip over any null values
+  
+    
+    //console.log('Made it to formatting')
+    //console.log(inputFeature)
 
-  function formatFeature (sum, inputFeature, index) {
     // Most of what we need to do here is extract the longitude and latitude
-    const url = config.ogcconnector.url
-  
-    // Delete this property because it's a JSON object
-    if (inputFeature.attributes) {
-      delete inputFeature.attributes
+    var coords = inputFeature.WGS84Geometry
+    if(inputFeature.WGS84Geometry == null) {
+      console.log('null')
+      coords = [0,0]
+    } else {
+      coords = coords.replace('POINT (', '') 
+      coords = coords.replace(')', '')
+
+      coords = coords.split(' ')
     }
-  
-    if (inputFeature.Id) {
-      inputFeature.url = url + '/lightning/r/Account/' + inputFeature.Id + '/view'
-    }
-  
-    // Make an objectID the index of the reduce function
-    inputFeature.OBJECTID = index + 1
-  
-    if (inputFeature.BillingLongitude && inputFeature.BillingLatitude) {
-      const feature = {
-        type: 'Feature',
-        properties: inputFeature,
-        geometry: {
-          type: 'Point',
-          coordinates: [inputFeature.BillingLongitude, inputFeature.BillingLatitude]
-        }
+    //console.log(`Coordinates are ${coords[0]}, ${coords[1]}`)
+
+    const feature = {
+      type: 'Feature',
+      properties: inputFeature,
+      geometry: {
+        type: 'Point',
+        // long,lat
+        coordinates: [coords[0], coords[1]]
       }
-      sum.push(feature)
     }
-    return sum
-  }
-*/
+
+    // But we also want to translate a few of the date fields so they are easier to use downstream
+    const dateFields = ['Id', 'GroundLevel', 'FinalDepth', 'Geometry', 'BingGeometry', 'WGS84Geometry']
+    dateFields.forEach(field => {
+      feature.properties[field] = feature.properties[field]
+    })
+  
+  return feature
+  
+}
 
 module.exports = opengroundcloud
 
