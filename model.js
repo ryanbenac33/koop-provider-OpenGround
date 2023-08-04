@@ -10,6 +10,8 @@
   Best reference of all published providers: https://github.com/jking-gis/koop-provider-Salesforce/blob/master/Salesforce.js
   Node JS fix: https://www.lightly-dev.com/blog/node-js-fetch-is-not-defined/
   Secondary option for Fetch API using Request: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+  Matched array using mapping: https://stackoverflow.com/questions/29244116/merge-geojson-based-on-unique-id
+  Fetching multiple API requests at once before processing: https://stackoverflow.com/questions/46241827/fetch-api-requesting-multiple-get-requests
   */
 
 //const request = require('request').defaults({ json: true })
@@ -32,6 +34,9 @@ const contentType = config.ogcconnector.contentType
 const token = config.ogcconnector.token
 const url = config.ogcconnector.url
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 function opengroundcloud (koop) {}
 
 // Public function to return data from the
@@ -52,50 +57,104 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   // throw error if id in the wrong format
   if (!projectID || !modelName) callback(new Error('The "id" parameter in the URL must be of form "projectUID::ModelGroupName"'))
 
-  //${url}/boreholes/projects/${projectID}/locations
-  //${url}/data/projects/${projectID}/groups/${modelName}
-
-  // 1. Construct the OpenGroundCloud API request URL
-  //const requrl = `${url}/data/projects/${projectID}/groups/${modelName}`
-  const requrl = `${url}/boreholes/projects/${projectID}/locations`
-  console.log(`\nAPI URL request: ${requrl}\n`)
-
-  // 2. Make the request to the remote API
-  crossFetch.fetch(requrl, {method: "GET", headers: {
+  // 1. declare API headers
+  const apiHeaders = {
     "KeynetixCloud": keynetixCloud,
     "Authorization": `Bearer ${token}`,
     "Content-Type": contentType,
     "InstanceId": instanceID
-  }}).then(resp => { 
+  }
+
+  // 2. Construct the OpenGroundCloud API request URLs
+  const requrlOne = `${url}/boreholes/projects/${projectID}/locations`
+  const requrlTwo = `${url}/data/projects/${projectID}/groups/${modelName}`
+  //console.log(`\nAPI URL request: ${requrlOne}\n`)
+  //console.log(`\nAPI URL request: ${requrlTwo}\n`)
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //use Promise.all to get all needed data at one time to be merged and processed together
+  Promise.all([crossFetch.fetch(requrlTwo, {method: "GET", headers: apiHeaders}).then(resp => { 
     if (!resp.ok) {
       const status = resp.status
       const statusText = resp.statusText
-      throw new Error(`Request to ${requrl} failed; ${status}, ${statusText}.`)
+      throw new Error(`Request to ${requrlTwo} failed; ${status}, ${statusText}.`)
+    }
+    console.log(`${resp.status} Connection Successful to ${requrlTwo}`)
+
+    return resp.json()
+  }).then(extraJson => {
+    const extraGeojson = translateNames(extraJson)
+
+    //const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
+    //geojson.metadata = { geometryType }
+
+    console.log ("Processing Name Table Complete")
+    console.log(extraGeojson[1])
+  }),
+  /////////////////////////////////
+  crossFetch.fetch(requrlOne, {method: "GET", headers: apiHeaders}).then(resp => { 
+    if (!resp.ok) {
+      const status = resp.status
+      const statusText = resp.statusText
+      throw new Error(`Request to ${requrlOne} failed - sverify you have a current access token; ${status}, ${statusText}.`)
     }
 
     // send message that connection was successful
-    console.log(`${resp.status} Connection Successful\n`)
+    console.log(`${resp.status} Successful Connection to ${requrlOne}`)
 
     return resp.json()
   }).then(json => {
-    // Access each boring by doing json[i]
-    //console.log(json[0])
-
-    // 4. Create Metadata
+    
+    // 6. Create Metadata
     const geojson = translate(json)
 
     const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
     geojson.metadata = { geometryType }
 
-    console.log ("Processing Complete\n")
-    //console.log(geojson)
-    // 5. Fire callback
+    console.log ("Processing Main Complete")
+    console.log(geojson)
+    // 7. Fire callback to provider with formatted data
     callback(null, geojson)
-  })
-  // 6. Handle any errors
-    .catch(callback)
+
+  }).then(
+    //merge the tables together here and return a table with only the complete data
+    console.log("")
+  ).catch(callback)
+  ])
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// 9. Declare helper functions
+
+// function to translate only the data from boring names
+function translateNames (input) {
+  //console.log('Made it to translation')
+  return {
+    type: 'FeatureCollection',
+    features: input.map(formatNames)
+  }
+}
+
+// function to translate only the data from boring names
+function formatNames (inputFeatures) {
+    //console.log('Made it to formatting')
+    //console.log(inputFeature)
+
+    const feature = {
+      properties: inputFeatures,
+    }
+
+    const name = feature.properties['DataFields']
+
+    // translate two datafields   
+    feature.properties['DataFields'] = name[0]['Header'] 
+    feature.properties['BoringName'] = name[0]['Value']
+    
+  return feature
+}
+
+// helper function to create feature class from API input (data, no name table)
 function translate (input) {
   //console.log('Made it to translation')
   return {
@@ -104,17 +163,15 @@ function translate (input) {
   }
 }
 
+// helper function to create feature class from API input (data, no name table)
 function formatFeature (inputFeature) {
-  //skip over any null values
-  
-    
     //console.log('Made it to formatting')
     //console.log(inputFeature)
 
     // Most of what we need to do here is extract the longitude and latitude
     var coords = inputFeature.WGS84Geometry
     if(inputFeature.WGS84Geometry == null) {
-      console.log('null')
+      //console.log('null')
       coords = [0,0]
     } else {
       coords = coords.replace('POINT (', '') 
@@ -133,16 +190,10 @@ function formatFeature (inputFeature) {
         coordinates: [coords[0], coords[1]]
       }
     }
-
-    // But we also want to translate a few of the date fields so they are easier to use downstream
-    const dateFields = ['Id', 'GroundLevel', 'FinalDepth', 'Geometry', 'BingGeometry', 'WGS84Geometry']
-    dateFields.forEach(field => {
-      feature.properties[field] = feature.properties[field]
-    })
-  
   return feature
-  
 }
 
-module.exports = opengroundcloud
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// 10. Return the model exports to koop for hosting
+module.exports = opengroundcloud
