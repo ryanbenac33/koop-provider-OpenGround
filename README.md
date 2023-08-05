@@ -11,9 +11,9 @@ Koop is a JavaScript toolkit for connecting spatial APIs — in this case connec
 ## Getting Started
 To get started using Koop, it is highly recommended to do each of the following:
 1. Read through Koop documentation including:
-    -[Koop Quickstart Guide](https://koopjs.github.io/docs/basics/quickstart)
-    -[Providers](https://koopjs.github.io/docs/usage/provider) documentation 
-    -[Koop Core](https://koopjs.github.io/docs/usage/koop-core) documentation
+    - [Koop Quickstart Guide](https://koopjs.github.io/docs/basics/quickstart)
+    - [Providers](https://koopjs.github.io/docs/usage/provider) documentation 
+    - [Koop Core](https://koopjs.github.io/docs/usage/koop-core) documentation
 2. [Download Node.js](https://nodejs.org/en/download) to your machine for testing the provider
 3. Install a developer environment like VS Code to view the Provider .js code
 4. Download Google Chrome and enable the "Inspect" developer tool
@@ -28,9 +28,9 @@ All data will be viewed and accessed using a web browser (Google Chrome is recom
 
 `http://localhost:8080/opengroundcloud/rest/services/PROJECT_UID::DATA_TABLE/FeatureServer/0/query`
 
--**8080** is the default port the server will listen on. This is configurable in `server.js`
--**PROJECT_UID** is a unique identifier for a project. To lookup the UID for a specific project, use this link: *LINK UNDER CONSTRUCTION*
--**DATA_TABLE** is the OpenGround data table information you want to access. Currently, the provider is only configured to handle the "LocationDetails" input, however future version may expand functionality as needed
+- **8080** is the default port the server will listen on. This is configurable in `server.js`
+- **PROJECT_UID** is a unique identifier for a project. To lookup the UID for a specific project, use this link: *LINK UNDER CONSTRUCTION*
+- **DATA_TABLE** is the OpenGround data table information you want to access. Currently, the provider is only configured to handle the "LocationDetails" input, however future version may expand functionality as needed
 
 Complete Example:
 `http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`
