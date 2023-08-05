@@ -18,12 +18,15 @@ To get started using Koop, it is highly recommended to do each of the following:
 3. Install a developer environment like VS Code to view the Provider .js code
 4. Download Google Chrome and enable the "Inspect" developer tool
 
+### Initialize NPM and Koop CLI
 This provider ships with the base provider and a server file. After following the quick start guide, be sure you have installed npm (Node Package Manager) which can be utilized through the CMD command line. In the CMD using npm, download and install the Koop CLI (command line interface) using: 
 
 `npm install -g @koopjs/cli`
 
-Clone this repository to your local machine and open with VS Code. To start the server and pulling data, open `server.js` and start a new terminal. In the terminal, `node server.js` will initialize the server and register the provider. The terminal will also provide an example link to access data.
+### Initialize Files From Provider
+Clone this repository to your local machine and open with VS Code. To start the server and pulling data, open `server.js` and start a new terminal. In the terminal enter `node server.js`. This will initialize the server and register the provider. The terminal output will also provide an example link to access data.
 
+### Accessing the Data URL
 All data will be viewed and accessed using a web browser (Google Chrome is recommended). Data is requested and accessed by correctly formatting a URL link in the following format:
 
 `http://localhost:8080/opengroundcloud/rest/services/PROJECT_UID::DATA_TABLE/FeatureServer/0/query`
