@@ -1,7 +1,7 @@
 # Koop-Provider-OpenGround
-**The problem**: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
+<ins>**The problem**</ins>: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
 
-**The solution**: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
+<ins>**The solution**</ins>: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
 
 ## What is Koop?
 Koop is a JavaScript toolkit for connecting spatial APIs — in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). 
