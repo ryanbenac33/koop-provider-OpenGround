@@ -1,15 +1,22 @@
 # Koop-Provider-OpenGround
-The problem: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
+**The problem**: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
 
-The solution: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
+**The solution**: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
 
-## How It Works
-**What is Koop?** Koop is a JavaScript toolkit for connecting spatial APIs; in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). 
+## What is Koop?
+Koop is a JavaScript toolkit for connecting spatial APIs — in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). 
 
-**What is a Provider?** A "provider" is a term used by Koop which describesa set of code that pulls data and converts it to GeoJSON. All API requesting, data translating, and hosting is accomplished behind the scenes of the provider utilizing this Koop-OpenGround-Provider and a Node.js server.
+**What is a Koop Provider?** A "provider" is a term used by Koop to describe a set of code that requests data and converts it to GeoJSON. All API requesting, data translating, and hosting is accomplished behind the scenes of this Koop-OpenGround-Provider running on a Node.js server.
 
 ## Getting Started
-To get started using Koop, it is highly recommended to read through the [Koop's Quickstart Guide](https://koopjs.github.io/docs/basics/quickstart) and related documentation for [Providers](https://koopjs.github.io/docs/usage/provider) and the [Koop Core](https://koopjs.github.io/docs/usage/koop-core). You must also [download Node.js](https://nodejs.org/en/download) to your machine to test the provider. You will also want to install a developer environment like VS Code to view the JS code, as well as enabling the "Inspect" tool on Google Chrome.
+To get started using Koop, it is highly recommended to do each of the following:
+1. Read through Koop documentation including:
+    -[Koop Quickstart Guide](https://koopjs.github.io/docs/basics/quickstart)
+    -[Providers](https://koopjs.github.io/docs/usage/provider) documentation 
+    -[Koop Core](https://koopjs.github.io/docs/usage/koop-core) documentation
+2. [Download Node.js](https://nodejs.org/en/download) to your machine for testing the provider
+3. Install a developer environment like VS Code to view the Provider .js code
+4. Download Google Chrome and enable the "Inspect" developer tool
 
 This provider ships with the base provider and a server file. After following the quick start guide, be sure you have installed npm (Node Package Manager) which can be utilized through the CMD command line. In the CMD using npm, download and install the Koop CLI (command line interface) using: 
 
