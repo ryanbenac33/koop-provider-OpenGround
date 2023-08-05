@@ -79,7 +79,7 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
       const statusText = extraJson.statusText
       throw new Error(`Request to ${requrlTwo} failed; ${status}, ${statusText}.`)
     }
-    console.log(`${extraJson.status} Connection Successful to ${requrlTwo}`)
+    //console.log(`${extraJson.status} Connection Successful to ${requrlTwo}`)
 
     return extraJson.json()}),
   /////////////////////////////////
@@ -89,21 +89,22 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
       const statusText = detailJson.statusText
       throw new Error(`Request to ${requrlOne} failed - verify you have a current access token; ${status}, ${statusText}.`)
     }
-    console.log(`${detailJson.status} Successful Connection to ${requrlOne}`)
+    //console.log(`${detailJson.status} Successful Connection to ${requrlOne}`)
 
     return detailJson.json()
   })]).then(([extraJson, detailJson]) => {
-    //6. merge the tables together here and return a table with only the complete data
-    
-    const extraGeojson = translateNames(extraJson)
-    const geojson = translate(detailJson)
+    // 3. merge the tables together here and return a table with only the complete data
+    const mergedJson = mergeJson(extraJson, detailJson)
+    const filteredJson = filterJson(mergedJson)
 
-    // 6. Create Metadata
+    // 4. Translate data to ESRI feature format
+    const geojson = translate(filteredJson)
+
+    // 5. Create Metadata
     const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
     geojson.metadata = { geometryType }
 
-    console.log ("Processing Main Complete")
-    // 7. Fire callback to provider with formatted data
+    // 6. Fire callback to provider with formatted data
     callback(null, geojson)
 
   }).catch(callback)
@@ -111,33 +112,17 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 9. Declare helper functions
+// 7. Declare helper functions
 
-// function to translate only the data from boring names
-function translateNames (input) {
-  //console.log('Made it to translation')
-  return {
-    type: 'FeatureCollection',
-    features: input.map(formatNames)
-  }
+// function to merge two json files together
+function mergeJson (jsonOne, jsonTwo) {
+  var merged = _.merge(_.keyBy(jsonOne, 'Id'), _.keyBy(jsonTwo, 'Id'))
+  return _.values(merged)
 }
 
-// function to translate only the data from boring names
-function formatNames (inputFeatures) {
-    //console.log('Made it to formatting')
-    //console.log(inputFeature)
-
-    const feature = {
-      properties: inputFeatures,
-    }
-
-    const name = feature.properties['DataFields']
-
-    // translate two datafields   
-    feature.properties['DataFields'] = name[0]['Header'] 
-    feature.properties['BoringName'] = name[0]['Value']
-    
-  return feature
+// function to filter out null values
+function filterJson(input) {
+  return _.reject(input, {WGS84Geometry: null})
 }
 
 // helper function to create feature class from API input (data, no name table)
@@ -151,9 +136,6 @@ function translate (input) {
 
 // helper function to create feature class from API input (data, no name table)
 function formatFeature (inputFeature) {
-    //console.log('Made it to formatting')
-    //console.log(inputFeature)
-
     // Most of what we need to do here is extract the longitude and latitude
     var coords = inputFeature.WGS84Geometry
     if(inputFeature.WGS84Geometry == null) {
@@ -165,8 +147,15 @@ function formatFeature (inputFeature) {
 
       coords = coords.split(' ')
     }
-    //console.log(`Coordinates are ${coords[0]}, ${coords[1]}`)
 
+    // Fix datafield name and pull out boring name
+    const name = inputFeature.DataFields
+
+    // translate two datafields   
+    inputFeature['DataFields'] = name[0]['Header'] 
+    inputFeature['BoringName'] = name[0]['Value']
+
+    // create feature for feature class
     const feature = {
       type: 'Feature',
       properties: inputFeature,
@@ -181,5 +170,5 @@ function formatFeature (inputFeature) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 10. Return the model exports to koop for hosting
+// 8. Return the model exports to koop for hosting
 module.exports = opengroundcloud
