@@ -73,54 +73,40 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //use Promise.all to get all needed data at one time to be merged and processed together
-  Promise.all([crossFetch.fetch(requrlTwo, {method: "GET", headers: apiHeaders}).then(resp => { 
-    if (!resp.ok) {
-      const status = resp.status
-      const statusText = resp.statusText
+  Promise.all([crossFetch.fetch(requrlTwo, {method: "GET", headers: apiHeaders}).then(extraJson => { 
+    if (!extraJson.ok) {
+      const status = extraJson.status
+      const statusText = extraJson.statusText
       throw new Error(`Request to ${requrlTwo} failed; ${status}, ${statusText}.`)
     }
-    console.log(`${resp.status} Connection Successful to ${requrlTwo}`)
+    console.log(`${extraJson.status} Connection Successful to ${requrlTwo}`)
 
-    return resp.json()
-  }).then(extraJson => {
-    const extraGeojson = translateNames(extraJson)
-
-    //const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
-    //geojson.metadata = { geometryType }
-
-    console.log ("Processing Name Table Complete")
-    console.log(extraGeojson[1])
-  }),
+    return extraJson.json()}),
   /////////////////////////////////
-  crossFetch.fetch(requrlOne, {method: "GET", headers: apiHeaders}).then(resp => { 
-    if (!resp.ok) {
-      const status = resp.status
-      const statusText = resp.statusText
-      throw new Error(`Request to ${requrlOne} failed - sverify you have a current access token; ${status}, ${statusText}.`)
+  crossFetch.fetch(requrlOne, {method: "GET", headers: apiHeaders}).then(detailJson => { 
+    if (!detailJson.ok) {
+      const status = detailJson.status
+      const statusText = detailJson.statusText
+      throw new Error(`Request to ${requrlOne} failed - verify you have a current access token; ${status}, ${statusText}.`)
     }
+    console.log(`${detailJson.status} Successful Connection to ${requrlOne}`)
 
-    // send message that connection was successful
-    console.log(`${resp.status} Successful Connection to ${requrlOne}`)
-
-    return resp.json()
-  }).then(json => {
+    return detailJson.json()
+  })]).then(([extraJson, detailJson]) => {
+    //6. merge the tables together here and return a table with only the complete data
     
-    // 6. Create Metadata
-    const geojson = translate(json)
+    const extraGeojson = translateNames(extraJson)
+    const geojson = translate(detailJson)
 
+    // 6. Create Metadata
     const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
     geojson.metadata = { geometryType }
 
     console.log ("Processing Main Complete")
-    console.log(geojson)
     // 7. Fire callback to provider with formatted data
     callback(null, geojson)
 
-  }).then(
-    //merge the tables together here and return a table with only the complete data
-    console.log("")
-  ).catch(callback)
-  ])
+  }).catch(callback)
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
