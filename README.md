@@ -1,10 +1,38 @@
 # Koop-Provider-OpenGround
+The problem: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
+
+The solution: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
+
 ## How It Works
+**What is Koop?** Koop is a JavaScript toolkit for connecting spatial APIs; in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). 
+
+**What is a Provider?** A "provider" is a term used by Koop which describesa set of code that pulls data and converts it to GeoJSON. All API requesting, data translating, and hosting is accomplished behind the scenes of the provider utilizing this Koop-OpenGround-Provider and a Node.js server.
 
 ## Getting Started
+To get started using Koop, it is highly recommended to read through the [Koop's Quickstart Guide](https://koopjs.github.io/docs/basics/quickstart) and related documentation for [Providers](https://koopjs.github.io/docs/usage/provider) and the [Koop Core](https://koopjs.github.io/docs/usage/koop-core). You must also [download Node.js](https://nodejs.org/en/download) to your machine to test the provider. You will also want to install a developer environment like VS Code to view the JS code, as well as enabling the "Inspect" tool on Google Chrome.
 
-## Configuring the Provider for a Server
+This provider ships with the base provider and a server file. After following the quick start guide, be sure you have installed npm (Node Package Manager) which can be utilized through the CMD command line. In the CMD using npm, download and install the Koop CLI (command line interface) using: 
+
+`npm install -g @koopjs/cli`
+
+Clone this repository to your local machine and open with VS Code. To start the server and pulling data, open `server.js` and start a new terminal. In the terminal, `node server.js` will initialize the server and register the provider. The terminal will also provide an example link to access data.
+
+All data will be viewed and accessed using a web browser (Google Chrome is recommended). Data is requested and accessed by correctly formatting a URL link in the following format:
+
+`http://localhost:8080/opengroundcloud/rest/services/PROJECT_UID::DATA_TABLE/FeatureServer/0/query`
+
+-**8080** is the default port the server will listen on. This is configurable in `server.js`
+-**PROJECT_UID** is a unique identifier for a project. To lookup the UID for a specific project, use this link: *LINK UNDER CONSTRUCTION*
+-**DATA_TABLE** is the OpenGround data table information you want to access. Currently, the provider is only configured to handle the "LocationDetails" input, however future version may expand functionality as needed
+
+Complete Example:
+`http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`
 
 ## Accessing the Data as a Feature Class
 
+## Configuring the Provider for a Server
+
 ## Interpreting Unexpected Responses and Errors
+Most errors will be caught and explained by the program either displayed in the URL link or the terminal. Common examples of errors currently include the following:
+
+1. **401 - Forbidden**: Your token is out of date and you should populate `token` in `config/default.json`
