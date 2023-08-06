@@ -38,6 +38,9 @@ All data will be viewed and accessed using a web browser (Google Chrome is recom
 Complete Example:
 [`http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`](http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query)
 
+### Example Data
+This repo also contains a JSON response from the provider using the project link above. That file is found in `example-data/boringData.txt`.
+
 ## Accessing the Data as a Feature Class
 
 ## Configuring the Provider for a Server
