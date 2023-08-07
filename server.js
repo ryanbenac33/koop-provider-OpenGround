@@ -48,6 +48,7 @@ ngrok.connect({
   addr: port,
 }).then(url => {
   console.log(`\nngrok is running at ${url}`)
+  console.log(`Check the status of ngrok at: http://127.0.0.1:4040/status`)
   console.log(`\nAccess project https ngrok link at: ${url}/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`)
 })
 
