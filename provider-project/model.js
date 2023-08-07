@@ -11,9 +11,9 @@
 
 //const request = require('request').defaults({ json: true })
 const fetch = import('node-fetch') // requesting from API
-const config = require('./config')
-const _ = require('./lodash') // dealing with arrays and numbers
-const crossFetch = require('./cross-fetch') // fetch function fix for node js
+const config = require('../config/default.json')
+const _ = require('../node_modules/lodash') // dealing with arrays and numbers
+const crossFetch = require('../node_modules/cross-fetch') // fetch function fix for node js
 
 // throw error if request variables not defined
 if (!config.ogcconnector.instanceID) throw new Error(`ERROR: Instance ID must be defined in your config.`)
@@ -28,6 +28,7 @@ const keynetixCloud = config.ogcconnector.keynetixCloud
 const contentType = config.ogcconnector.contentType
 const token = config.ogcconnector.token
 const url = config.ogcconnector.url
+const port = config.ogcconnector.port
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -46,12 +47,13 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
 
   //url "id" paramenter must be in the form projectID::modelName
   const details = req.params.id.split('::')
-  const projectID = details[0]
-  const modelName = details[1]
+  const project = details[0]
+  const output = details[1]
 
   // throw error if id in the wrong format
-  if (!projectID || !modelName) callback(new Error('The "id" parameter in the URL must be of form "projectUID::ModelGroupName"'))
-
+  if (!project || !output) callback(new Error('The "id" parameter in the URL must be of form "projects::output"'))
+  if (project !== "projects") callback(new Error('The first "id" parameter in the URL must be "projects"'))
+  
   // 1. declare API headers
   const apiHeaders = {
     "KeynetixCloud": keynetixCloud,
@@ -61,46 +63,31 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   }
 
   // 2. Construct the OpenGroundCloud API request URLs
-  const requrlOne = `${url}/boreholes/projects/${projectID}/locations`
-  const requrlTwo = `${url}/data/projects/${projectID}/groups/${modelName}`
+  const requrlOne = `${url}/data/projects`
   //console.log(`\nAPI URL request: ${requrlOne}\n`)
-  //console.log(`\nAPI URL request: ${requrlTwo}\n`)
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //use Promise.all to get all needed data at one time to be merged and processed together
-  Promise.all([crossFetch.fetch(requrlTwo, {method: "GET", headers: apiHeaders}).then(extraJson => { 
-    if (!extraJson.ok) {
-      const status = extraJson.status
-      const statusText = extraJson.statusText
-      throw new Error(`Request to ${requrlTwo} failed; ${status}, ${statusText}.`)
-    }
-    //console.log(`${extraJson.status} Connection Successful to ${requrlTwo}`)
-
-    return extraJson.json()}),
-  /////////////////////////////////
-  crossFetch.fetch(requrlOne, {method: "GET", headers: apiHeaders}).then(detailJson => { 
-    if (!detailJson.ok) {
-      const status = detailJson.status
-      const statusText = detailJson.statusText
+  Promise.all([
+  crossFetch.fetch(requrlOne, {method: "GET", headers: apiHeaders}).then(projects => { 
+    if (!projects.ok) {
+      const status = projects.status
+      const statusText = projects.statusText
       throw new Error(`Request to ${requrlOne} failed - verify you have a current access token; ${status}, ${statusText}.`)
     }
-    //console.log(`${detailJson.status} Successful Connection to ${requrlOne}`)
+    //console.log(`${projects.status} Successful Connection to ${requrlOne}`)
 
-    return detailJson.json()
-  })]).then(([extraJson, detailJson]) => {
+    return projects.json()
+  })]).then(([projects]) => {
     // 3. merge the tables together here and return a table with only the complete data
-    const mergedJson = mergeJson(extraJson, detailJson)
-    const filteredJson = filterJson(mergedJson)
-
-    // 4. Translate data to ESRI feature format
-    const geojson = translate(filteredJson)
+    const fixedProjets = fixProjectInfo(projects)
 
     // 5. Create Metadata
-    const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
-    geojson.metadata = { geometryType }
+    const geometryType = _.get(fixedProjets, 'features[0].geometry.type', 'Point')
+    fixedProjets.metadata = { geometryType }
 
     // 6. Fire callback to provider with formatted data
-    callback(null, geojson)
+    callback(null, fixedProjets)
 
   }).catch(callback)
 }
@@ -109,15 +96,26 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
 
 // 7. Declare helper functions
 
-// function to merge two json files together
-function mergeJson (jsonOne, jsonTwo) {
-  var merged = _.merge(_.keyBy(jsonOne, 'Id'), _.keyBy(jsonTwo, 'Id'))
-  return _.values(merged)
-}
+//fix the project info table
+function fixProjectInfo (json) {
+  var count = Object.keys(json).length
+  //fixedJson['DataFields'] = fixedJson['DataFields']['Value'][0]
 
-// function to filter out null values
-function filterJson(input) {
-  return _.reject(input, {WGS84Geometry: null})
+  // iterate over JSON to get actual name
+  for (var i = 0; i < count; i++) {
+    var currentObj = json[i]
+    currentObj['BoringName'] = currentObj['DataFields'][0]['Value']
+    
+    // remove unneccessary JSON fields
+    delete currentObj['DataFields']
+    delete currentObj['Group']
+    delete currentObj['HasDocuments']
+
+    // add testing URL
+    currentObj['TestingURL'] = `http://localhost:${port}/opengroundcloud/rest/services/${currentObj['Id']}::LocationDetails/FeatureServer/0/query`
+  }
+  
+  return json
 }
 
 // helper function to create feature class from API input (data, no name table)
@@ -127,40 +125,6 @@ function translate (input) {
     type: 'FeatureCollection',
     features: input.map(formatFeature)
   }
-}
-
-// helper function to create feature class from API input (data, no name table)
-function formatFeature (inputFeature) {
-    // Most of what we need to do here is extract the longitude and latitude
-    var coords = inputFeature.WGS84Geometry
-    if(inputFeature.WGS84Geometry == null) {
-      //console.log('null')
-      coords = [0,0]
-    } else {
-      coords = coords.replace('POINT (', '') 
-      coords = coords.replace(')', '')
-
-      coords = coords.split(' ')
-    }
-
-    // Fix datafield name and pull out boring name
-    const name = inputFeature.DataFields
-
-    // translate two datafields   
-    inputFeature['DataFields'] = name[0]['Header'] 
-    inputFeature['BoringName'] = name[0]['Value']
-
-    // create feature for feature class
-    const feature = {
-      type: 'Feature',
-      properties: inputFeature,
-      geometry: {
-        type: 'Point',
-        // long,lat
-        coordinates: [coords[0], coords[1]]
-      }
-    }
-  return feature
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
