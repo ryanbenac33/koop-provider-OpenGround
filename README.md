@@ -8,7 +8,7 @@ Koop is a JavaScript toolkit for connecting spatial APIs — in this case connec
 
 **What is a Koop Provider?** A "provider" is a term used by Koop to describe a set of code that requests data and converts it to GeoJSON. All API requesting, data translating, and hosting is accomplished behind the scenes of this Koop-OpenGround-Provider running on a Node.js server.
 
-**How is the OpenGround Data Accessed?** All data is hosted on USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information about the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is currently set up with temporary authorization codes provided when logging into the OpenGround Web Portal.
+**How is the OpenGround Data Accessed?** All data is hosted on a USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information about the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is currently set up with temporary authorization codes provided when logging into the OpenGround Web Portal.
 
 ## Getting Started
 To get started using Koop, it is highly recommended to do each of the following:
