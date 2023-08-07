@@ -21,7 +21,7 @@ To get started using Koop, it is highly recommended to do each of the following:
    
 4. [Download Google Chrome](https://www.google.com/chrome/) and enable the "Inspect" developer tool
 
-5. *Optional*: [Watch this video](https://www.youtube.com/watch?v=mhdLEUuE3dk) for a visual demonstration of getting started
+5. *Optional*: [Watch this video](https://www.youtube.com/watch?v=mhdLEUuE3dk) for a visual demonstration of getting started (connecting to web map at 23:35)
 
 ### Initialize NPM and Koop CLI
 This provider ships with the base provider and a server file. After following the quick start guide, be sure you have installed npm (Node Package Manager) which can be utilized through the CMD command line. In the CMD using npm, download and install the Koop CLI (command line interface) using: 
