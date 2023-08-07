@@ -16,13 +16,18 @@ const koop = new Koop()
 // koop.register(koopAuth)
 
 /* Register providers */
-const provider = require('./')
-koop.register(provider)
+const dataprovider = require('./')
+const projectprovider = require('./provider-project/')
+
+koop.register(dataprovider)
+console.log('\n')
+koop.register(projectprovider)
+
 
 // Start listening for HTTP traffic
 const config = require('config')
 // Set port for configuration or fall back to default
-const port = config.port || 8080
+const port = config.ogcconnector.port || 8080
 
 if (process.env.LAMBDA) {
   module.exports = koop.server
@@ -39,6 +44,8 @@ To find providers visit: https://www.npmjs.com/search?q=koop+provider
 To see version information: http://localhost:8080/opengroundcloud/rest/info
 
 Try it out in your browswer: http://localhost:${port}/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query
+
+View the projects at this link: http://localhost:${port}/opengroundprojects/rest/services/projects::table/FeatureServer/0/query
 
 Press control + c to exit
 `
