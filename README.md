@@ -21,6 +21,8 @@ To get started using Koop, it is highly recommended to do each of the following:
    
 4. [Download Google Chrome](https://www.google.com/chrome/) and enable the "Inspect" developer tool
 
+5. *Optional*: [Watch this video](https://www.youtube.com/watch?v=mhdLEUuE3dk) for a visual demonstration of getting started
+
 ### Initialize NPM and Koop CLI
 This provider ships with the base provider and a server file. After following the quick start guide, be sure you have installed npm (Node Package Manager) which can be utilized through the CMD command line. In the CMD using npm, download and install the Koop CLI (command line interface) using: 
 
@@ -54,7 +56,7 @@ Complete Example:
 [`http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`](http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query)
 
 ### Example Data
-This repo also contains a JSON response from the provider using the project link above. That file is found in `example-data/boringData.txt`.
+This repo also contains an example JSON response from the provider using the project link above. That file is found in `example-data/boringData.txt`.
 
 ## Accessing the Data as a Feature Class
 
@@ -64,4 +66,4 @@ This repo also contains a JSON response from the provider using the project link
 Most errors will be caught and explained by the program either displayed in the URL link or the terminal. Common examples of errors currently include the following:
 
 1. **401 - Forbidden**: Your token is out of date and you should populate `token` in `config/default.json`
-2. **Cannot GET**: This is usually accompanied by a white background and an error message. This means that the URL you are trying to access cannot be routed through Koop. Verify you have the correct URL and that it is formatted correctly
+2. **Cannot GET**: This is usually accompanied by a white background and an error message. The URL you are trying to access cannot be routed through Koop. Verify you have the correct URL and that it is formatted correctly
