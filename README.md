@@ -18,6 +18,7 @@ To get started using Koop, it is highly recommended to do each of the following:
     - [Koop Core](https://koopjs.github.io/docs/usage/koop-core) documentation
 2. [Download Node.js](https://nodejs.org/en/download) to your machine for testing the provider
 3. Install a developer environment like [VS Code](https://code.visualstudio.com/download) to view the Provider .js code
+   
 4. [Download Google Chrome](https://www.google.com/chrome/) and enable the "Inspect" developer tool
 
 ### Initialize NPM and Koop CLI
