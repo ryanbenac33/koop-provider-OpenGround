@@ -8,6 +8,8 @@ Koop is a JavaScript toolkit for connecting spatial APIs — in this case connec
 
 **What is a Koop Provider?** A "provider" is a term used by Koop to describe a set of code that requests data and converts it to GeoJSON. All API requesting, data translating, and hosting is accomplished behind the scenes of this Koop-OpenGround-Provider running on a Node.js server.
 
+**How is the OpenGround Data Accessed?** All data is hosted on USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information aobut the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is currently set up with temporary authorization codes provided when logging into the OpenGround Web Portal.
+
 ## Getting Started
 To get started using Koop, it is highly recommended to do each of the following:
 1. Read through Koop documentation including:
@@ -23,10 +25,18 @@ This provider ships with the base provider and a server file. After following th
 
 `npm install -g @koopjs/cli`
 
+**Note:** There are known issues installing the above packages when connected to VPN. Disconnect VPN and use only network to install the necessary packages.
+
 ### Initialize Files From Provider
 Clone this repository to your local machine and open with VS Code. To start the server and pulling data, open `server.js` and start a new terminal. In the terminal enter `node server.js`. This will initialize the server and register the provider. The terminal output will also provide an example link to access data.
 
-### Accessing the Data URL
+### Accessing Project Data URL
+`http://localhost:8080/opengroundprojects/rest/services/projects::OUTPUT/FeatureServer/0/query`
+
+Complete Example:
+[`http://localhost:8080/opengroundprojects/rest/services/projects::table/FeatureServer/0/query`](http://localhost:8080/opengroundprojects/rest/services/projects::table/FeatureServer/0/query)
+
+### Accessing Boring Data URL
 All data will be viewed and accessed using a web browser (Google Chrome is recommended). Data is requested and accessed by correctly formatting a URL link in the following format:
 
 `http://localhost:8080/opengroundcloud/rest/services/PROJECT_UID::DATA_TABLE/FeatureServer/0/query`
