@@ -8,7 +8,7 @@ Koop is a JavaScript toolkit for connecting spatial APIs — in this case connec
 
 **What is a Koop Provider?** A "provider" is a term used by Koop to describe a set of code that requests data and converts it to GeoJSON. All API requesting, data translating, and hosting is accomplished behind the scenes of this Koop-OpenGround-Provider running on a Node.js server.
 
-**How is the OpenGround Data Accessed?** All data is hosted on USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information aobut the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is currently set up with temporary authorization codes provided when logging into the OpenGround Web Portal.
+**How is the OpenGround Data Accessed?** All data is hosted on USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information about the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is currently set up with temporary authorization codes provided when logging into the OpenGround Web Portal.
 
 ## Getting Started
 To get started using Koop, it is highly recommended to do each of the following:
@@ -24,6 +24,10 @@ To get started using Koop, it is highly recommended to do each of the following:
 This provider ships with the base provider and a server file. After following the quick start guide, be sure you have installed npm (Node Package Manager) which can be utilized through the CMD command line. In the CMD using npm, download and install the Koop CLI (command line interface) using: 
 
 `npm install -g @koopjs/cli`
+
+The out of the box outputs also require the following modules be installed via command or terminal line (in addition to any installed during an app initialization):
+
+`npm install flat`
 
 **Note:** There are known issues installing the above packages when connected to VPN. Disconnect VPN and use only network to install the necessary packages.
 
@@ -59,3 +63,4 @@ This repo also contains a JSON response from the provider using the project link
 Most errors will be caught and explained by the program either displayed in the URL link or the terminal. Common examples of errors currently include the following:
 
 1. **401 - Forbidden**: Your token is out of date and you should populate `token` in `config/default.json`
+2. **Cannot GET**: This is usually accompanied by a white background and an error message. This means that the URL you are trying to access cannot be routed through Koop. Verify you have the correct URL and that it is formatted correctly
