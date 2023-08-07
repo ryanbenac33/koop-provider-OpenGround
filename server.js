@@ -16,6 +16,9 @@ const koop = new Koop()
 // koop.register(koopAuth)
 
 /* Register providers */
+const flat = require('./koop-output-flat')
+koop.register(flat)
+
 const dataprovider = require('./')
 const projectprovider = require('./provider-project/')
 
@@ -45,7 +48,7 @@ To see version information: http://localhost:8080/opengroundcloud/rest/info
 
 Try it out in your browswer: http://localhost:${port}/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query
 
-View the projects at this link: http://localhost:${port}/opengroundprojects/rest/services/projects::table/FeatureServer/0/query
+View the projects at this link: http://localhost:${port}/opengroundprojects/projects::table/flat
 
 Press control + c to exit
 `
