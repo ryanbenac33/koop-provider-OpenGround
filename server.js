@@ -5,6 +5,8 @@
 process.on('SIGINT', () => process.exit(0))
 process.on('SIGTERM', () => process.exit(0))
 
+console.log(`\n-------------------------------------------------------------------------------------------------------------------------------------------------------`)
+console.log(`Registering Outputs\n`)
 // Initialize Koop
 const Koop = require('@koopjs/koop-core')
 const koop = new Koop()
@@ -20,14 +22,19 @@ const koop = new Koop()
 /* Register providers */
 const flat = require('./koop-output-flat')
 koop.register(flat)
+console.log(`\nOutputs Registered Successfully`)
+
+
+console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
+console.log(`Registering Providers\n`)
 
 const dataprovider = require('./')
 const projectprovider = require('./provider-project/')
 
 koop.register(dataprovider)
-console.log('\n')
 koop.register(projectprovider)
 
+console.log(`\nProviders Registered Successfully`)
 
 // Start listening for HTTP traffic
 const config = require('config')
@@ -40,18 +47,27 @@ if (process.env.LAMBDA) {
   koop.server.listen(port)
 }
 
-// set up ngrok testing for https connection to ESRI
-const ngrok = require('ngrok')
+// get development mode status
+const devStatus = config.ogcconnector.devMode
 
-ngrok.connect({
-  proto: "http",
-  addr: port,
-}).then(url => {
-  console.log(`\nngrok is running at ${url}`)
-  console.log(`Check the status of ngrok at: http://127.0.0.1:4040/status`)
-  console.log(`\nAccess project https ngrok link at: ${url}/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`)
+// start ngrok if in development mode
+if(devStatus) {
+  // set up ngrok testing for https connection to ESRI
+  const ngrok = require('ngrok')
+
+  ngrok.connect({
+    proto: "http",
+    addr: port,
+    }).then(url => {
+    console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
+    console.log(`\nngrok is running at ${url}`)
+    console.log(`Check the status of ngrok at: http://127.0.0.1:4040/status`)
+    console.log(`\nAccess boring https:// ngrok link at: ${url}/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`)
+    console.log(`NOTE: You can only access the ngrok link when DISCONNECTED from the CORPSNET`)
+    console.log(`\nPress control + c to exit`)
+    console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
 })
-
+}
 
 const message = `
 Koop OpenGround Cloud Data Provider listening on ${port}
@@ -67,4 +83,6 @@ http://localhost:${port}/opengroundcloud/rest/services/projects::table/FeatureSe
 
 Press control + c to exit
 `
+console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
 console.log(message)
+console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)

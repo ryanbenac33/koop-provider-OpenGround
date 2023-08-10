@@ -101,9 +101,12 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
     const geojson = translate(filteredJson)
 
     // 5. Create Metadata
-    const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
-    geojson.metadata = { geometryType }
-
+    //const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
+    geojson['metadata'] = { 
+      geometryType: 'Point',
+      description: 'OpenGround Cloud Boring Data'
+     }
+    
     // 6. Fire callback to provider with formatted data
     callback(null, geojson)
 
@@ -151,18 +154,21 @@ function formatFeature (inputFeature) {
     // Fix datafield name and pull out boring name
     const name = inputFeature.DataFields
 
+    delete inputFeature['Geometry']
+    delete inputFeature['BingGeometry']
+
     // translate two datafields   
     inputFeature['DataFields'] = name[0]['Header'] 
     inputFeature['BoringName'] = name[0]['Value']
 
     // create feature for feature class
     const feature = {
-      type: 'Feature',
+      type: "Feature",
       properties: inputFeature,
       geometry: {
-        type: 'Point',
+        type: "Point",
         // long,lat
-        coordinates: [coords[0], coords[1]]
+        coordinates: [Number(coords[0]), Number(coords[1])]
       }
     }
   return feature
