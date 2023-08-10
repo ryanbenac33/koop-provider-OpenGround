@@ -14,12 +14,36 @@
   Fetching multiple API requests at once before processing: https://stackoverflow.com/questions/46241827/fetch-api-requesting-multiple-get-requests
   */
 
+  
+const testapiHeaders = {
+  "grant_type": "client_credentials",
+  "scope": "openground",
+  "client_id": "openground-connector-usace-arcgis-geojson-cx0585t79gv9",
+  "client_secret": "1+nnOiQqnKHJzROLQZPUKKnDJLsvw2rRsRtJ1Mg0/dH9DaPSsjFWGg4JNJw92XTkePLZghCpzIosIR9aJgqbOQ=="
+}
+
 //const request = require('request').defaults({ json: true })
 const fetch = import('node-fetch') // requesting from API
 const config = require('config')
 const _ = require('lodash') // dealing with arrays and numbers
 const crossFetch = require('cross-fetch') // fetch function fix for node js
 
+
+// get authentification
+/*
+var machinetoken = Promise.all([crossFetch.fetch("https://imsoidc.bentley.com/connect/token", {method: "POST", headers: testapiHeaders})]).then(reponse => { 
+  if (!reponse.ok) {
+    const status = reponse.status
+    const statusText = reponse.statusText
+    throw new Error(`Request failed; ${status}, ${statusText}.`)
+  }
+  //console.log(`${reponse.status} Connection Successful to ${requrlTwo}`)
+
+  return reponse.json()}
+)
+
+console.log(machinetoken)
+*/
 // throw error if request variables not defined
 if (!config.ogcconnector.instanceID) throw new Error(`ERROR: Instance ID must be defined in your config.`)
 if (!config.ogcconnector.keynetixCloud) throw new Error(`ERROR: Keynetix Cloud Instance must be defined in your config.`)
@@ -28,7 +52,9 @@ if (!config.ogcconnector.token) throw new Error(`ERROR: Token must be defined in
 if (!config.ogcconnector.url) throw new Error(`ERROR: API access URL must be defined in your config.`)
 
 // pull all the config.json data
-const instanceID = config.ogcconnector.instanceID
+const instanceID = config.ogcconnector.sand_instanceID
+//const instanceID = config.ogcconnector.instanceID
+
 const keynetixCloud = config.ogcconnector.keynetixCloud
 const contentType = config.ogcconnector.contentType
 const token = config.ogcconnector.token
