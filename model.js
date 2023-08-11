@@ -13,7 +13,11 @@
   Matched array using mapping: https://stackoverflow.com/questions/29244116/merge-geojson-based-on-unique-id
   Fetching multiple API requests at once before processing: https://stackoverflow.com/questions/46241827/fetch-api-requesting-multiple-get-requests
   */
-
+//const request = require('request').defaults({ json: true })
+const fetch = import('node-fetch') // requesting from API
+const config = require('config')
+const _ = require('lodash') // dealing with arrays and numbers
+const crossFetch = require('cross-fetch') // fetch function fix for node js
 
 // throw error if request variables not defined
 if (!config.ogcconnector.instanceID) throw new Error(`ERROR: Instance ID must be defined in your config.`)
