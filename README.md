@@ -4,11 +4,34 @@
 <ins>**The solution**</ins>: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
 
 ## What is Koop?
-Koop is a JavaScript toolkit for connecting spatial APIs — in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). 
+Koop is a JavaScript toolkit built on Node.js for connecting spatial APIs — in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). 
 
 **What is a Koop Provider?** A "provider" is a term used by Koop to describe a set of code that requests data and converts it to GeoJSON. All API requesting, data translating, and hosting are accomplished behind the scenes of this Koop-OpenGround-Provider running on a Node.js server.
 
 **How is the OpenGround Data Accessed?** All data is hosted on a USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information about the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is currently set up with temporary authorization codes provided when logging into the OpenGround Web Portal.
+
+## Current Status
+This Koop provider is in the early stages of development. The following are pieces that have been proven to work in testing:
+1. Pull data from the OpenGround API into Koop
+
+2. Merge data and translate to GeoJSON format
+
+3. Filtering null coordinates and handling errors
+   
+4. Adding a projects provider
+
+5. Create README for documentation
+
+The following are pieces that are still in development:
+1. Configure application to utilize service account credentials
+
+2. Create connection to AGOL feature class
+
+3. Test Koop on a CorpsNet Node.js server
+
+4. QA check data and lcoations
+
+5. Add table and JSON output service for projects
 
 ## Getting Started
 To get started using Koop, it is highly recommended to do each of the following:
@@ -22,6 +45,8 @@ To get started using Koop, it is highly recommended to do each of the following:
 4. [Download Google Chrome](https://www.google.com/chrome/) and enable the "Inspect" developer tool
 
 5. *Optional*: [Watch this video](https://www.youtube.com/watch?v=mhdLEUuE3dk) for a visual demonstration of getting started (connecting to web map at 23:35)
+
+6. This repo has an INCOMPLETE config.json file. Contact the owner of this repo for the complete config.json file which will give the application access to utilize the service account.
 
 ### Initialize NPM and Koop CLI
 This provider ships with the base provider and a server file. After following the quick start guide, be sure you have installed npm (Node Package Manager) which can be utilized through the CMD command line. In the CMD using npm, download and install the Koop CLI (command line interface) using: 
@@ -67,3 +92,4 @@ Most errors will be caught and explained by the program either displayed in the 
 
 1. **401 - Forbidden**: Your token is out of date and you should populate `token` in `config/default.json`
 2. **Cannot GET**: This is usually accompanied by a white background and an error message. The URL you are trying to access cannot be routed through Koop. Verify you have the correct URL and that it is formatted correctly
+
