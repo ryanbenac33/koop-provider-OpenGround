@@ -22,6 +22,8 @@ This Koop provider is in the early stages of development. The following are piec
 
 5. Create README for documentation
 
+6. Have Koop provide ESRIGeoJSON output at an accessible link
+
 The following are pieces that are still in development:
 1. Configure application to utilize service account credentials
 
