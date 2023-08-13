@@ -2,14 +2,17 @@
   Author: Ryan Benac
   USACE MVR ECG
 
-  great reference: https://github.com/koopjs/koop-provider-google-fusion-tables/blob/master/server.js
+  best example reference: https://github.com/koopjs/koop-provider-google-fusion-tables/blob/master/server.js
   about ngrok: https://medium.com/bigcommerce-developer-blog/how-to-test-app-authentication-locally-with-ngrok-149150bfe4cf
 */
+
 // clean shutdown on `cntrl + c`
 process.on('SIGINT', () => process.exit(0))
 process.on('SIGTERM', () => process.exit(0))
 
-console.log(`\n-------------------------------------------------------------------------------------------------------------------------------------------------------`)
+const consoleSeparator = "--------------------------------------------------------------------"
+
+console.log(`\n${consoleSeparator}`)
 console.log(`Registering Outputs\n`)
 // Initialize Koop
 const Koop = require('@koopjs/koop-core')
@@ -28,9 +31,7 @@ const flat = require('./koop-output-flat')
 koop.register(flat)
 console.log(`\nOutputs Registered Successfully`)
 
-
-console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
-console.log(`Registering Providers\n`)
+console.log(`${consoleSeparator}\n`)
 
 const dataprovider = require('./')
 const projectprovider = require('./provider-project/')
@@ -45,6 +46,7 @@ const config = require('config')
 // Set port for configuration or fall back to default
 const port = config.ogcconnector.port || 8080
 
+// check process
 if (process.env.LAMBDA) {
   module.exports = koop.server
 } else {
@@ -65,10 +67,10 @@ if(devStatus) {
     }).then(url => {
     console.log(`\nngrok is running at ${url}`)
     console.log(`Check the status of ngrok at: http://127.0.0.1:4040/status`)
-    console.log(`\nAccess boring https:// ngrok link at: ${url}/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`)
+    console.log(`\nAccess boring https:// ngrok link at: ${url}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query`)
     console.log(`NOTE: You can only access the ngrok link when DISCONNECTED from the CORPSNET`)
     console.log(`\nPress control + c to exit`)
-    console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
+    console.log(consoleSeparator)
 })
 }
 
@@ -76,16 +78,15 @@ const message = `
 Koop OpenGround Cloud Data Provider listening on ${port}
 For more docs visit: https://koopjs.github.io/docs/specs/provider/
 To find providers visit: https://www.npmjs.com/search?q=koop+provider
-
 To see version information: http://localhost:8080/opengroundcloud/rest/info
 
-Try it out in your browswer: http://localhost:${port}/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query
+View boring data in your browser: http://localhost:${port}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query
 
 View the projects at this link: http://localhost:${port}/opengroundprojects/projects::table/flat
 http://localhost:${port}/opengroundcloud/rest/services/projects::table/FeatureServer/0/query
 
 Press control + c to exit
 `
-console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
+console.log(consoleSeparator)
 console.log(message)
-console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
+console.log(consoleSeparator)
