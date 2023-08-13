@@ -11,7 +11,7 @@ Koop is a JavaScript toolkit built on Node.js for connecting spatial APIs — in
 **How is the OpenGround Data Accessed?** All data is hosted on a USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information about the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is currently set up with temporary authorization codes provided when logging into the OpenGround Web Portal.
 
 ## Current Status
-This Koop provider is in the early stages of development. **The following are pieces that have been proven to work in testing**:
+This Koop provider is in the middle stages of development. **The following are pieces that have been proven to work in testing**:
 1. Pull data from the OpenGround API into Koop
 
 2. Merge data and translate to GeoJSON format
@@ -31,7 +31,7 @@ This Koop provider is in the early stages of development. **The following are pi
 
 3. Test Koop on a CorpsNet Node.js server
 
-4. QA check data and lcoations
+4. QA check data and locations
 
 5. Add table and JSON output service for projects
 
@@ -80,10 +80,10 @@ Once the server is running, any requested data is hosted at a link formatted as 
 *Server and production environment steps are still in testing and development*
 
 ## Interpreting Unexpected Responses and Errors
-Most errors will be caught and explained by the program either displayed in the URL link or the terminal. Common examples of errors currently include the following:
+Most errors will be caught and explained by the program either displayed in the URL link or the server terminal. Common examples of errors currently include the following:
 
 1. **401 - Forbidden**: Your token is out of date and you should populate a new `token` in `config/default.json`
-2. **Cannot GET**: This is usually accompanied by a white background and an error message. The URL you are trying to access cannot be routed through Koop. Verify you have the correct URL and that it is formatted correctly
+2. **Cannot GET**: This is usually accompanied by a white background and an error message. The URL you are trying to access cannot be routed through Koop. Verify you have the correct project UID and that it is formatted correctly
 
 ## Getting Started with Koop Development
 This guide follows the steps to initialize development of this already created provider. To get started using Koop, it is highly recommended to do each of the following:
@@ -125,4 +125,4 @@ During development, you can specify a port that `server.js` should start listeni
 Notice that this is being hosted on port 8080 (specified in the config file) as opposed to the production URL hosted on the CorpsNet.
 
 ### Testing Data Interoperability with AGOL
-When in development, using the localhost URL to see the data output will work for a long period, but eventually you will reach a point where you want to see the tested data on AGOL (ArcGIS Online). AGOL requires data links to be provided via a secure https:// link. To get around this during testing, install `ngrok` in your working app directory. Ngrok creates a secure https link by tunneling through your machine to the port hosting the data. In this provider, set the `devMode` field to `true` to start ngrok when `server.js` is initialized. Now, you can follow the above AGOL connection steps using the ngrok link.
+When in development, using the localhost URL to see the data output will work for a long period, but eventually you will reach a point where you want to see the tested data on AGOL (ArcGIS Online). AGOL requires data links to be provided via a secure https:// link. To get around this during testing, install `ngrok` in your working app directory. Ngrok creates a secure https link by tunneling through your machine to the port hosting the data. In this provider config file, set the `devMode` field to `true` to start ngrok when `server.js` is initialized. Now, you can follow the above AGOL connection steps using the ngrok link.
