@@ -65,16 +65,17 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   // check token active status and request new token if not active
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // get current token
-  const token = config.ogcconnector.token
-  const jsonPath = "./config/default.json"
+  var token = config.ogcconnector.token
   const requestURL = config.ogcconnector.request_url
   const clientID = config.ogcconnector.client_id
   const clientSecret = config.ogcconnector.client_secret
   const scope = config.ogcconnector.scope
   const grantType = config.ogcconnector.grant_type
 
+  const jsonPath = "./config/default.json"
+
   // check if token is active, if not then get a new token
-  
+
   // if token is not valid, request new token
   console.log("Requesting new token")
 
@@ -86,17 +87,24 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
     "client_secret": clientSecret
   }
 
-  var newToken = crossFetch.fetch(requestURL, {method: "POST", body: reqBody}).then(json => {
-    console.log(json)
-    return json
-  })
+  async function getToken() {
+    await crossFetch.fetch(requestURL, {method: "POST", body: reqBody}).then(json => {
+      return json
+    })
+  }
   
-  console.log(newToken)
+  let newToken = getToken()
+
+  getToken().then(result=>{console.log(result)})
+  
+  //console.log(newToken)
+
+  
   // then overwrite existing token
   //writeToken(jsonPath, newToken)
 
   // then set token for API access
-  token = config.ogcconnector.token
+  //token = config.ogcconnector.token
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -111,8 +119,6 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   // 3. Construct the OpenGroundCloud API request URLs
   const requrlOne = `${url}/boreholes/projects/${projectID}/locations`
   const requrlTwo = `${url}/data/projects/${projectID}/groups/${modelName}`
-  //console.log(`\nAPI URL request: ${requrlOne}\n`)
-  //console.log(`\nAPI URL request: ${requrlTwo}\n`)
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //use Promise.all to get all needed data at one time to be merged and processed together
@@ -167,7 +173,7 @@ function writeToken (path, newToken) {
       console.log(error)
       return
     }    
-    const parsedData = JSON.parse(data)
+    var parsedData = JSON.parse(data)
 
     parsedData.ogcconnector.testField = newToken
   
