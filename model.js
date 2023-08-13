@@ -12,31 +12,34 @@
   Secondary option for Fetch API using Request: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   Matched array using mapping: https://stackoverflow.com/questions/29244116/merge-geojson-based-on-unique-id
   Fetching multiple API requests at once before processing: https://stackoverflow.com/questions/46241827/fetch-api-requesting-multiple-get-requests
+  JSON file writing: https://www.atatus.com/blog/read-write-a-json-file-with-node-js/#:~:text=We%20can%20read%20and%20write,update%20the%20new%20JSON%20data.&text=Before%20using%20the%20data%20directly,it%20into%20a%20JavaScript%20object.
   */
 //const request = require('request').defaults({ json: true })
 const fetch = import('node-fetch') // requesting from API
 const config = require('config')
 const _ = require('lodash') // dealing with arrays and numbers
 const crossFetch = require('cross-fetch') // fetch function fix for node js
+const {writeFile, readFile} = require("fs")
 
-// throw error if request variables not defined
-if (!config.ogcconnector.instanceID) throw new Error(`ERROR: Instance ID must be defined in your config.`)
-if (!config.ogcconnector.keynetixCloud) throw new Error(`ERROR: Keynetix Cloud Instance must be defined in your config.`)
-if (!config.ogcconnector.contentType) throw new Error(`ERROR: Content type must be defined in your config.`)
-if (!config.ogcconnector.token) throw new Error(`ERROR: Token must be defined in your config.`)
-if (!config.ogcconnector.url) throw new Error(`ERROR: API access URL must be defined in your config.`)
+// throw error if required configuration definition variables not defined
+if (!config.ogcconnector.sand_instanceID) throw new Error(`CONFIG ERROR: Instance ID must be defined in the config.`)
+if (!config.ogcconnector.keynetixCloud) throw new Error(`CONFIG ERROR: Keynetix Cloud Instance must be defined in the config.`)
+if (!config.ogcconnector.contentType) throw new Error(`CONFIG ERROR: Content type must be defined in the config.`)
+if (!config.ogcconnector.token) throw new Error(`CONFIG ERROR: Token must be defined in the config.`)
+if (!config.ogcconnector.url) throw new Error(`CONFIG ERROR: API access URL must be defined in the config.`)
+if (!config.ogcconnector.client_secret) throw new Error(`CONFIG ERROR: Client secret (service account) must be defined in the config.`)
+if (!config.ogcconnector.client_id) throw new Error(`CONFIG ERROR: Client ID (service account) must be defined in the config.`)
+if (!config.ogcconnector.scope) throw new Error(`CONFIG ERROR: Scope (service account) must be defined in the config.`)
+if (!config.ogcconnector.grant_type) throw new Error(`CONFIG ERROR: Credential grant type (service account) must be defined in the config.`)
+if (!config.ogcconnector.request_url) throw new Error(`CONFIG ERROR: Token request URLmust be defined in the config.`)
 
-// pull all the config.json data
+// pull initial config data
 const instanceID = config.ogcconnector.sand_instanceID
-//const instanceID = config.ogcconnector.instanceID
-
 const keynetixCloud = config.ogcconnector.keynetixCloud
 const contentType = config.ogcconnector.contentType
-const token = config.ogcconnector.token
 const url = config.ogcconnector.url
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// pull initial token to verify
 
 function opengroundcloud (koop) {}
 
@@ -58,7 +61,46 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   // throw error if id in the wrong format
   if (!projectID || !modelName) callback(new Error('The "id" parameter in the URL must be of form "projectUID::ModelGroupName"'))
 
-  // 1. declare API headers
+  // 1. Token Authorization
+  // check token active status and request new token if not active
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // get current token
+  const token = config.ogcconnector.token
+  const jsonPath = "./config/default.json"
+  const requestURL = config.ogcconnector.request_url
+  const clientID = config.ogcconnector.client_id
+  const clientSecret = config.ogcconnector.client_secret
+  const scope = config.ogcconnector.scope
+  const grantType = config.ogcconnector.grant_type
+
+  // check if token is active, if not then get a new token
+  
+  // if token is not valid, request new token
+  console.log("Requesting new token")
+
+  // define request body for token
+  const reqBody = {
+    "grant_type": grantType,
+    "scope": scope,
+    "client_id": clientID,
+    "client_secret": clientSecret
+  }
+
+  var newToken = crossFetch.fetch(requestURL, {method: "POST", body: reqBody}).then(json => {
+    console.log(json)
+    return json
+  })
+  
+  console.log(newToken)
+  // then overwrite existing token
+  //writeToken(jsonPath, newToken)
+
+  // then set token for API access
+  token = config.ogcconnector.token
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  // 2. Declare API headers
   const apiHeaders = {
     "KeynetixCloud": keynetixCloud,
     "Authorization": `Bearer ${token}`,
@@ -66,7 +108,7 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
     "InstanceId": instanceID
   }
 
-  // 2. Construct the OpenGroundCloud API request URLs
+  // 3. Construct the OpenGroundCloud API request URLs
   const requrlOne = `${url}/boreholes/projects/${projectID}/locations`
   const requrlTwo = `${url}/data/projects/${projectID}/groups/${modelName}`
   //console.log(`\nAPI URL request: ${requrlOne}\n`)
@@ -94,21 +136,21 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
 
     return detailJson.json()
   })]).then(([extraJson, detailJson]) => {
-    // 3. merge the tables together here and return a table with only the complete data
+    // 4. merge the tables together here and return a table with only the complete data
     const mergedJson = mergeJson(extraJson, detailJson)
     const filteredJson = filterJson(mergedJson)
 
-    // 4. Translate data to ESRI feature format
+    // 5. Translate data to ESRI feature format
     const geojson = translate(filteredJson)
 
-    // 5. Create Metadata
+    // 6. Create Metadata
     //const geometryType = _.get(geojson, 'features[0].geometry.type', 'Point')
     geojson['metadata'] = { 
       geometryType: 'Point',
       description: 'OpenGround Cloud Boring Data'
      }
     
-    // 6. Fire callback to provider with formatted data
+    // 7. Fire callback to provider with formatted data
     callback(null, geojson)
 
   }).catch(callback)
@@ -116,7 +158,28 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 7. Declare helper functions
+// 8. Declare helper functions
+
+// function to overwrite current token
+function writeToken (path, newToken) {
+  readFile(path, (error, data) => {
+    if (error) {
+      console.log(error)
+      return
+    }    
+    const parsedData = JSON.parse(data)
+
+    parsedData.ogcconnector.testField = newToken
+  
+    writeFile(path, JSON.stringify(parsedData, null, 2), (err) => {
+      if (err) {
+        console.log("Failed to write updated token")
+        return
+      }
+      //console.log("Updated file successfully")
+    })
+  })
+}
 
 // function to merge two json files together
 function mergeJson (jsonOne, jsonTwo) {
@@ -177,5 +240,5 @@ function formatFeature (inputFeature) {
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// 8. Return the model exports to koop for hosting
+// 9. Return the model exports to koop for hosting
 module.exports = opengroundcloud

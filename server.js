@@ -1,4 +1,8 @@
-/*great reference: https://github.com/koopjs/koop-provider-google-fusion-tables/blob/master/server.js
+/*
+  Author: Ryan Benac
+  USACE MVR ECG
+
+  great reference: https://github.com/koopjs/koop-provider-google-fusion-tables/blob/master/server.js
   about ngrok: https://medium.com/bigcommerce-developer-blog/how-to-test-app-authentication-locally-with-ngrok-149150bfe4cf
 */
 // clean shutdown on `cntrl + c`
@@ -59,7 +63,6 @@ if(devStatus) {
     proto: "http",
     addr: port,
     }).then(url => {
-    console.log(`-------------------------------------------------------------------------------------------------------------------------------------------------------`)
     console.log(`\nngrok is running at ${url}`)
     console.log(`Check the status of ngrok at: http://127.0.0.1:4040/status`)
     console.log(`\nAccess boring https:// ngrok link at: ${url}/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`)
