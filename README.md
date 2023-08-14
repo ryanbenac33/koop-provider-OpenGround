@@ -25,6 +25,7 @@ This provider is in the later stages of development and will soon be moving to a
 | Configure application to utilize service account credentials | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 | Create README for documentation | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 | Create connection to AGOL feature class | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
+| Gain access to Node JS server | ![Static Badge](https://img.shields.io/badge/In_Progress-yellow) |
 | Test Koop on a CorpsNet Node.js server | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | QA check data and locations | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | Add table and JSON output service for projects | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
