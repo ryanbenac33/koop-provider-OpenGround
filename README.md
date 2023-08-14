@@ -15,6 +15,21 @@ Koop is a JavaScript toolkit built on Node.js for connecting spatial APIs — in
 ## Current Build Status
 This provider is in the later stages of development and will soon be moving to a production Beta release.
 
+| Development Task | Status |
+| -------- | --------|
+| Pull data from the OpenGround API into Koop | |
+| Merge data and translate to GeoJSON format | |
+| Filtering null coordinates and handling errors | |
+| Adding a projects provider | |
+| Have Koop provide ESRIGeoJSON output at an accessible link | |
+| Configure application to utilize service account credentials | |
+| Create README for documentation | |
+| Create connection to AGOL feature class | |
+| Test Koop on a CorpsNet Node.js server | |
+| QA check data and locations | |
+| Add table and JSON output service for projects | |
+| Correctly configure projects provider | |
+
 **The following are pieces that have been proven to work in testing**:
 1. Pull data from the OpenGround API into Koop
 
