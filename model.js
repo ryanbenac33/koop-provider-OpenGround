@@ -16,23 +16,11 @@ const _ = require('lodash') // dealing with arrays and numbers
 const crossFetch = require('cross-fetch') // fetch function fix for node js
 const {writeFile, readFile} = require("fs")
 
-// throw error if required configuration definition variables not defined
-if (!config.ogcconnector.sand_instanceID) throw new Error(`CONFIG ERROR: Instance ID must be defined in the config.`)
-if (!config.ogcconnector.keynetixCloud) throw new Error(`CONFIG ERROR: Keynetix Cloud Instance must be defined in the config.`)
-if (!config.ogcconnector.contentType) throw new Error(`CONFIG ERROR: Content type must be defined in the config.`)
-if (!config.ogcconnector.token) throw new Error(`CONFIG ERROR: Token must be defined in the config.`)
-if (!config.ogcconnector.url) throw new Error(`CONFIG ERROR: API access URL must be defined in the config.`)
-if (!config.ogcconnector.client_secret) throw new Error(`CONFIG ERROR: Client secret (service account) must be defined in the config.`)
-if (!config.ogcconnector.client_id) throw new Error(`CONFIG ERROR: Client ID (service account) must be defined in the config.`)
-if (!config.ogcconnector.scope) throw new Error(`CONFIG ERROR: Scope (service account) must be defined in the config.`)
-if (!config.ogcconnector.grant_type) throw new Error(`CONFIG ERROR: Credential grant type (service account) must be defined in the config.`)
-if (!config.ogcconnector.request_url) throw new Error(`CONFIG ERROR: Token request URLmust be defined in the config.`)
+// import other defined functions
+const tkn = require("./getToken/tokenFunctions")
 
-// pull initial config data
-const instanceID = config.ogcconnector.sand_instanceID
-const keynetixCloud = config.ogcconnector.keynetixCloud
-const contentType = config.ogcconnector.contentType
-const url = config.ogcconnector.url
+// throw error if required configuration definition variables not defined
+tkn.configCheck()
 
 function opengroundcloud (koop) {}
 
@@ -55,54 +43,30 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   if (!projectID || !modelName) callback(new Error('The "id" parameter in the URL must be of form "projectUID::ModelGroupName"'))
 
   // 1. Token Authorization
-  // check token active status and request new token if not active
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // get current token
-  var token = config.ogcconnector.token
+  // define requestURL
   const requestURL = config.ogcconnector.request_url
-  const clientID = config.ogcconnector.client_id
-  const clientSecret = config.ogcconnector.client_secret
-  const scope = config.ogcconnector.scope
-  const grantType = config.ogcconnector.grant_type
 
-  // it appears the API server side checks for active token and returns same token if active
-  // console.log(token)
-  // no need to test if token active in application if API already does that
-
-  // define request body for token
-  var reqBody = {
-    "grant_type": grantType,
-    "scope": scope,
-    "client_id": clientID,
-    "client_secret": clientSecret
-  }
-
-  // encode request body with URL form encoding
-  var newToken
-  // encode body
-  reqBody = encode(reqBody)
+  // encode body with URL form encoding
+  reqBody = tkn.encode(tkn.getBody())
 
   // call getToken to request new access token from Bentley API
-  getToken(requestURL, reqBody).then(response => {newToken = response
+  tkn.getToken(requestURL, reqBody).then(response => {newToken = response
     // overwrite existing config token
     const jsonPath = "./config/default.json"
-    writeToken(jsonPath, newToken)
+    tkn.writeToken(jsonPath, newToken)
   })
 
   // then set token for API access
-  token = config.ogcconnector.token 
+  var token = config.ogcconnector.token 
 
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // 2. Declare API data request headers
-  const apiHeaders = {
-    "KeynetixCloud": keynetixCloud,
-    "Authorization": `Bearer ${token}`,
-    "Content-Type": contentType,
-    "InstanceId": instanceID
-  }
+  const apiHeaders = tkn.getHeaders(token)
 
   // 3. Construct the OpenGroundCloud API request URLs
+  const url = config.ogcconnector.url
   const requrlOne = `${url}/boreholes/projects/${projectID}/locations`
   const requrlTwo = `${url}/data/projects/${projectID}/groups/${modelName}`
 
@@ -151,61 +115,6 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // 8. Declare helper functions
-
-// function to overwrite current token
-function writeToken (path, newToken) {
-  readFile(path, (error, data) => {
-    if (error) {
-      console.log(error)
-      return
-    }    
-    var parsedData = JSON.parse(data)
-
-    // write new token to default.json config file
-    parsedData.ogcconnector.token = newToken
-  
-    writeFile(path, JSON.stringify(parsedData, null, 2), (err) => {
-      if (err) {
-        console.log("Failed to write updated token")
-        return
-      }
-      //console.log("Updated file successfully")
-    })
-  })
-}
-
-// function to encode json body to url form encoded body
-function encode (json) {
-  var formBody = []
-  // loop through to encode each item in json
-  for (var property in json) {
-    var encodedKey = encodeURIComponent(property)
-    var encodedValue = encodeURIComponent(json[property])
-    formBody.push(encodedKey + "=" + encodedValue)
-  }
-  // join list so it is formatted for body request
-  formBody = formBody.join("&")
-  return formBody
-}
-
-// function to request token given formatted json body
-async function getToken(requestURL, encodedBody) {
-  const response = await crossFetch.fetch(requestURL, {method: "POST",
-  headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
-  body: encodedBody})
-  
-  // handle error if bad response
-  if (!response.ok) {
-    console.log(`Authorization token request error ${response.status}`)
-  }
-
-  const data = await response.json()
-
-  newToken = data.access_token
-
-  // return access token
-  return data.access_token
-}
 
 // function to merge two json files together
 function mergeJson (jsonOne, jsonTwo) {
