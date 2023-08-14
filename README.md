@@ -1,5 +1,5 @@
 # Koop-Provider-OpenGround
-![Static Badge](https://img.shields.io/badge/Koop--Provider--OpenGround-v1.0.5-blue)
+![Static Badge](https://img.shields.io/badge/Koop--Provider--OpenGround-v1.5.0-blue)
 
 <ins>**Defining the problem**</ins>: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
 
