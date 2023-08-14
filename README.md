@@ -1,7 +1,9 @@
 # Koop-Provider-OpenGround
-<ins>**The problem**</ins>: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
+![Static Badge](https://img.shields.io/badge/Koop--Provider--OpenGround-v1.0.5-blue)
 
-<ins>**The solution**</ins>: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
+<ins>**Defining the problem**</ins>: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
+
+<ins>**Creating the solution**</ins>: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
 
 ## What is Koop?
 Koop is a JavaScript toolkit built on Node.js for connecting spatial APIs — in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). 
@@ -11,7 +13,6 @@ Koop is a JavaScript toolkit built on Node.js for connecting spatial APIs — in
 **How is the OpenGround Data Accessed?** All data is hosted on a USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information about the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is configured using service account credentials (NOT included in this repo due to security concerns).
 
 ## Current Build Status
-Koop-Provider-OpenGround: Build `1.5.0`
 This provider is in the later stages of development and will soon be moving to a production Beta release.
 
 **The following are pieces that have been proven to work in testing**:
