@@ -34,7 +34,7 @@ This provider is in the later stages of development and will soon be moving to a
 ## Setting Up Koop
 **Important**: This repo has an INCOMPLETE config.json file and does not include neccessary modules. Contact the owner of this repo for the complete config.json file which will give the application access to utilize the service account.
 
-Koop runs on the Node.js platform. Clone this repo (and add the missing config file and module files specifed above) and save them to...*more to come*
+Koop runs on the Node JS platform. Clone this repo (and add the missing config file and module files specifed above) and save them to...*more to come*
 
 Koop data is initialized on a CorpsNet server which means that any OpenGround data accessed using this middleware is only accessible to those on the CorpsNet.
 
