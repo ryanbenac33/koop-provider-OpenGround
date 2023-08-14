@@ -17,18 +17,18 @@ This provider is in the later stages of development and will soon be moving to a
 
 | Development Task | Status |
 | -------- | --------|
-| Pull data from the OpenGround API into Koop | |
-| Merge data and translate to GeoJSON format | |
-| Filtering null coordinates and handling errors | |
-| Adding a projects provider | |
-| Have Koop provide ESRIGeoJSON output at an accessible link | |
-| Configure application to utilize service account credentials | |
-| Create README for documentation | |
-| Create connection to AGOL feature class | |
-| Test Koop on a CorpsNet Node.js server | |
-| QA check data and locations | |
-| Add table and JSON output service for projects | |
-| Correctly configure projects provider | |
+| Pull data from the OpenGround API into Koop | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+| Merge data and translate to GeoJSON format | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+| Filtering null coordinates and handling errors | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+| Adding a projects provider | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+| Have Koop provide ESRIGeoJSON output at an accessible link | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+| Configure application to utilize service account credentials | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+| Create README for documentation | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+| Create connection to AGOL feature class | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
+| Test Koop on a CorpsNet Node.js server | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
+| QA check data and locations | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
+| Add table and JSON output service for projects | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
+| Correctly configure projects provider | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
 
 **The following are pieces that have been proven to work in testing**:
 1. Pull data from the OpenGround API into Koop
