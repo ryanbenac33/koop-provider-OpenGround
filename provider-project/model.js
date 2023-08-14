@@ -15,6 +15,8 @@ const config = require('../config/default.json')
 const _ = require('../node_modules/lodash') // dealing with arrays and numbers
 const crossFetch = require('../node_modules/cross-fetch') // fetch function fix for node js
 
+const tkn = require("../getToken/tokenFunctions")
+
 // throw error if request variables not defined
 if (!config.ogcconnector.instanceID) throw new Error(`ERROR: Instance ID must be defined in your config.`)
 if (!config.ogcconnector.keynetixCloud) throw new Error(`ERROR: Keynetix Cloud Instance must be defined in your config.`)
@@ -66,6 +68,8 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   const requrlOne = `${url}/data/projects`
   //console.log(`\nAPI URL request: ${requrlOne}\n`)
 
+  console.log(requrlOne)
+  
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //use Promise.all to get all needed data at one time to be merged and processed together
   Promise.all([
