@@ -64,8 +64,8 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   const scope = config.ogcconnector.scope
   const grantType = config.ogcconnector.grant_type
 
-  // check if token is active, if not then get a new token
-
+  // it appears the API server side checks for active token and returns same token if active
+  // no need to test if token active in application if API already does that
 
   // define request body for token
   var reqBody = {
@@ -76,16 +76,20 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   }
 
   // encode request body with URL form encoding
+  var newToken
+  // encode body
   reqBody = encode(reqBody)
-  var newToken = getToken(requestURL, reqBody)
 
-  // then overwrite existing token
-  const jsonPath = "./config/default.json"
-  writeToken(jsonPath, newToken)
+  // call getToken to request new access token from Bentley API
+  getToken(requestURL, reqBody).then(response => {newToken = response
+    // overwrite existing config token
+    const jsonPath = "./config/default.json"
+    writeToken(jsonPath, newToken)
+  })
 
   // then set token for API access
-  //token = config.ogcconnector.token
-
+  token = config.ogcconnector.token 
+   
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   // 2. Declare API headers
@@ -155,7 +159,7 @@ function writeToken (path, newToken) {
     }    
     var parsedData = JSON.parse(data)
 
-    parsedData.ogcconnector.testField = newToken
+    parsedData.ogcconnector.token = newToken
   
     writeFile(path, JSON.stringify(parsedData, null, 2), (err) => {
       if (err) {
@@ -191,6 +195,8 @@ async function getToken(requestURL, encodedBody) {
   }
 
   const data = await response.json()
+
+  newToken = data.access_token
 
   // return access token
   return data.access_token
