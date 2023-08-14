@@ -4,16 +4,10 @@
   //Author: Ryan Benac
   //USACE MVR ECG
 
-  This file is required. It must export a class with at least one public function called `getData`
+  Note: See config/references.txt for reference and documentation links
 
-  Documentation: http://koopjs.github.io/docs/specs/provider/
-  Best reference of all published providers: https://github.com/jking-gis/koop-provider-Salesforce/blob/master/Salesforce.js
-  Node JS fix: https://www.lightly-dev.com/blog/node-js-fetch-is-not-defined/
-  Secondary option for Fetch API using Request: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-  Matched array using mapping: https://stackoverflow.com/questions/29244116/merge-geojson-based-on-unique-id
-  Fetching multiple API requests at once before processing: https://stackoverflow.com/questions/46241827/fetch-api-requesting-multiple-get-requests
-  JSON file writing: https://www.atatus.com/blog/read-write-a-json-file-with-node-js/#:~:text=We%20can%20read%20and%20write,update%20the%20new%20JSON%20data.&text=Before%20using%20the%20data%20directly,it%20into%20a%20JavaScript%20object.
-  */
+  This file is required. It must export a class with at least one public function called `getData`
+ */
 //const request = require('request').defaults({ json: true })
 const fetch = import('node-fetch') // requesting from API
 const config = require('config')
@@ -38,8 +32,6 @@ const instanceID = config.ogcconnector.sand_instanceID
 const keynetixCloud = config.ogcconnector.keynetixCloud
 const contentType = config.ogcconnector.contentType
 const url = config.ogcconnector.url
-
-// pull initial token to verify
 
 function opengroundcloud (koop) {}
 
@@ -72,36 +64,24 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   const scope = config.ogcconnector.scope
   const grantType = config.ogcconnector.grant_type
 
-  const jsonPath = "./config/default.json"
-
   // check if token is active, if not then get a new token
 
-  // if token is not valid, request new token
-  console.log("Requesting new token")
 
   // define request body for token
-  const reqBody = {
+  var reqBody = {
     "grant_type": grantType,
     "scope": scope,
     "client_id": clientID,
     "client_secret": clientSecret
   }
 
-  async function getToken() {
-    await crossFetch.fetch(requestURL, {method: "POST", body: reqBody}).then(json => {
-      return json
-    })
-  }
-  
-  let newToken = getToken()
+  // encode request body with URL form encoding
+  reqBody = encode(reqBody)
+  var newToken = getToken(requestURL, reqBody)
 
-  getToken().then(result=>{console.log(result)})
-  
-  //console.log(newToken)
-
-  
   // then overwrite existing token
-  //writeToken(jsonPath, newToken)
+  const jsonPath = "./config/default.json"
+  writeToken(jsonPath, newToken)
 
   // then set token for API access
   //token = config.ogcconnector.token
@@ -185,6 +165,35 @@ function writeToken (path, newToken) {
       //console.log("Updated file successfully")
     })
   })
+}
+
+// function to encode json body to url form encoded body
+function encode (json) {
+  var formBody = []
+  for (var property in json) {
+    var encodedKey = encodeURIComponent(property)
+    var encodedValue = encodeURIComponent(json[property])
+    formBody.push(encodedKey + "=" + encodedValue)
+  }
+  formBody = formBody.join("&")
+  return formBody
+}
+
+// function to request token given formatted json body
+async function getToken(requestURL, encodedBody) {
+  const response = await crossFetch.fetch(requestURL, {method: "POST",
+  headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+  body: encodedBody})
+  
+  // handle error if bad response
+  if (!response.ok) {
+    console.log(`Authorization token request error ${response.status}`)
+  }
+
+  const data = await response.json()
+
+  // return access token
+  return data.access_token
 }
 
 // function to merge two json files together
