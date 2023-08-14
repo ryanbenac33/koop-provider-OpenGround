@@ -20,20 +20,23 @@ This Koop provider is in the middle stages of development. **The following are p
    
 4. Adding a projects provider
 
-5. Create README for documentation
+5. Have Koop provide ESRIGeoJSON output at an accessible link
 
-6. Have Koop provide ESRIGeoJSON output at an accessible link
+6. Configure application to utilize service account credentials
+   
+7. Create README for documentation
+
 
 **The following are pieces that are still in development**:
-1. Configure application to utilize service account credentials
+1. Create connection to AGOL feature class
 
-2. Create connection to AGOL feature class
+2. Test Koop on a CorpsNet Node.js server
 
-3. Test Koop on a CorpsNet Node.js server
+3. QA check data and locations
 
-4. QA check data and locations
+4. Add table and JSON output service for projects
 
-5. Add table and JSON output service for projects
+5. Correctly configure projects provider
 
 ## Setting Up Koop
 **Important**: This repo has an INCOMPLETE config.json file and does not include neccessary modules. Contact the owner of this repo for the complete config.json file which will give the application access to utilize the service account.
