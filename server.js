@@ -2,8 +2,7 @@
   Author: Ryan Benac
   USACE MVR ECG
 
-  best example reference: https://github.com/koopjs/koop-provider-google-fusion-tables/blob/master/server.js
-  about ngrok: https://medium.com/bigcommerce-developer-blog/how-to-test-app-authentication-locally-with-ngrok-149150bfe4cf
+  Note: See config/references.txt for reference and documentation links
 */
 
 // clean shutdown on `cntrl + c`
