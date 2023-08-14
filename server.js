@@ -1,8 +1,14 @@
 /*
-  Author: Ryan Benac
-  USACE MVR ECG
+  server.js
+
+  //Author: Ryan Benac
+  //USACE MVR ECG
+  //Last Updated: 8/13/2023
 
   Note: See config/references.txt for reference and documentation links
+
+  This file is required. It must run the Koop server and register the developed data provider
+
 */
 
 // clean shutdown on `cntrl + c`

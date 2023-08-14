@@ -3,6 +3,7 @@
 
   //Author: Ryan Benac
   //USACE MVR ECG
+  //Last Updated: 8/13/2023
 
   Note: See config/references.txt for reference and documentation links
 
@@ -65,6 +66,7 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
   const grantType = config.ogcconnector.grant_type
 
   // it appears the API server side checks for active token and returns same token if active
+  // console.log(token)
   // no need to test if token active in application if API already does that
 
   // define request body for token
@@ -89,10 +91,10 @@ opengroundcloud.prototype.getData = function getData (req, callback) {
 
   // then set token for API access
   token = config.ogcconnector.token 
-   
+
   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  // 2. Declare API headers
+  // 2. Declare API data request headers
   const apiHeaders = {
     "KeynetixCloud": keynetixCloud,
     "Authorization": `Bearer ${token}`,
@@ -159,6 +161,7 @@ function writeToken (path, newToken) {
     }    
     var parsedData = JSON.parse(data)
 
+    // write new token to default.json config file
     parsedData.ogcconnector.token = newToken
   
     writeFile(path, JSON.stringify(parsedData, null, 2), (err) => {
@@ -174,11 +177,13 @@ function writeToken (path, newToken) {
 // function to encode json body to url form encoded body
 function encode (json) {
   var formBody = []
+  // loop through to encode each item in json
   for (var property in json) {
     var encodedKey = encodeURIComponent(property)
     var encodedValue = encodeURIComponent(json[property])
     formBody.push(encodedKey + "=" + encodedValue)
   }
+  // join list so it is formatted for body request
   formBody = formBody.join("&")
   return formBody
 }
@@ -215,7 +220,7 @@ function filterJson(input) {
 
 // helper function to create feature class from API input (data, no name table)
 function translate (input) {
-  //console.log('Made it to translation')
+  // loop through ("map") to translate and format each boring location feature
   return {
     type: 'FeatureCollection',
     features: input.map(formatFeature)
@@ -227,7 +232,7 @@ function formatFeature (inputFeature) {
     // Most of what we need to do here is extract the longitude and latitude
     var coords = inputFeature.WGS84Geometry
     if(inputFeature.WGS84Geometry == null) {
-      //console.log('null')
+      // add coordinates if null coordinates; will hopefully be filtered out later
       coords = [0,0]
     } else {
       coords = coords.replace('POINT (', '') 
@@ -239,6 +244,7 @@ function formatFeature (inputFeature) {
     // Fix datafield name and pull out boring name
     const name = inputFeature.DataFields
 
+    // remove unneccessary data from provider
     delete inputFeature['Geometry']
     delete inputFeature['BingGeometry']
 
