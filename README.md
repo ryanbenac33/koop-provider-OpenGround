@@ -30,33 +30,6 @@ This provider is in the later stages of development and will soon be moving to a
 | Add table and JSON output service for projects | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
 | Correctly configure projects provider | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
 
-**The following are pieces that have been proven to work in testing**:
-1. Pull data from the OpenGround API into Koop
-
-2. Merge data and translate to GeoJSON format
-
-3. Filtering null coordinates and handling errors
-   
-4. Adding a projects provider
-
-5. Have Koop provide ESRIGeoJSON output at an accessible link
-
-6. Configure application to utilize service account credentials
-   
-7. Create README for documentation
-
-
-**The following are pieces that are still in development**:
-1. Create connection to AGOL feature class
-
-2. Test Koop on a CorpsNet Node.js server
-
-3. QA check data and locations
-
-4. Add table and JSON output service for projects
-
-5. Correctly configure projects provider
-
 ## Setting Up Koop
 **Important**: This repo has an INCOMPLETE config.json file and does not include neccessary modules. Contact the owner of this repo for the complete config.json file which will give the application access to utilize the service account.
 
