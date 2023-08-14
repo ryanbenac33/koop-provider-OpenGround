@@ -100,7 +100,7 @@ function configCheck() {
     if (!config.ogcconnector.client_id) throw new Error(`CONFIG ERROR: Client ID (service account) must be defined in the config.`)
     if (!config.ogcconnector.scope) throw new Error(`CONFIG ERROR: Scope (service account) must be defined in the config.`)
     if (!config.ogcconnector.grant_type) throw new Error(`CONFIG ERROR: Credential grant type (service account) must be defined in the config.`)
-    if (!config.ogcconnector.request_url) throw new Error(`CONFIG ERROR: Token request URLmust be defined in the config.`)
+    if (!config.ogcconnector.request_url) throw new Error(`CONFIG ERROR: Token request URL must be defined in the config.`)
 }
 
 module.exports = {writeToken, encode, getToken, getBody, getHeaders, configCheck}
