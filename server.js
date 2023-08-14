@@ -88,7 +88,7 @@ To see version information: http://localhost:8080/opengroundcloud/rest/info
 View boring data in your browser: http://localhost:${port}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query
 
 View the projects at this link: http://localhost:${port}/opengroundprojects/projects::table/flat
-http://localhost:${port}/opengroundcloud/rest/services/projects::table/FeatureServer/0/query
+http://localhost:${port}/opengroundprojects/rest/services/projects::table/FeatureServer/0/query
 
 Press control + c to exit
 `
