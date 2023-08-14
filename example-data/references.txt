@@ -1,0 +1,16 @@
+This file contains links to all reference documents and code chunks utilized
+
+Model.js
+  Documentation: http://koopjs.github.io/docs/specs/provider/
+  Best reference of all published providers: https://github.com/jking-gis/koop-provider-Salesforce/blob/master/Salesforce.js
+  Node JS fix: https://www.lightly-dev.com/blog/node-js-fetch-is-not-defined/
+  Secondary option for Fetch API using Request: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+  Matched array using mapping: https://stackoverflow.com/questions/29244116/merge-geojson-based-on-unique-id
+  Fetching multiple API requests at once before processing: https://stackoverflow.com/questions/46241827/fetch-api-requesting-multiple-get-requests
+  JSON file writing: https://www.atatus.com/blog/read-write-a-json-file-with-node-js/#:~:text=We%20can%20read%20and%20write,update%20the%20new%20JSON%20data.&text=Before%20using%20the%20data%20directly,it%20into%20a%20JavaScript%20object.
+  Encoding and auth request: https://stackoverflow.com/questions/35325370/how-do-i-post-a-x-www-form-urlencoded-request-using-fetch
+ 
+Server.js
+  best example reference: https://github.com/koopjs/koop-provider-google-fusion-tables/blob/master/server.js
+  about ngrok: https://medium.com/bigcommerce-developer-blog/how-to-test-app-authentication-locally-with-ngrok-149150bfe4cf
+
