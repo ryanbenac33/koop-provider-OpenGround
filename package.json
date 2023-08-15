@@ -1,6 +1,6 @@
 {
   "name": "provider-opengroundcloud",
-  "version": "1.0.0",
+  "version": "1.6.0",
   "description": "Koop package to connect OpenGround Cloud data to ArcGIS Pro and ESRI",
   "main": "index.js",
   "scripts": {
