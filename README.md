@@ -21,15 +21,17 @@ This provider is in the later stages of development and will soon be moving to a
 | Merge data and translate to GeoJSON format | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 | Filtering null coordinates and handling errors | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 | Adding a projects provider | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+| Correctly configure projects provider | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 | Have Koop provide ESRIGeoJSON output at an accessible link | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 | Configure application to utilize service account credentials | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 | Create README for documentation | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 | Create connection to AGOL feature class | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
 | Gain access to Node JS server | ![Static Badge](https://img.shields.io/badge/In_Progress-yellow) |
+| Add table and JSON output service | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
+| Wire up machine credentials to access UDACE cloud | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | Test Koop on a CorpsNet Node.js server | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | QA check data and locations | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
-| Add table and JSON output service | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
-| Correctly configure projects provider | ![Static Badge](https://img.shields.io/badge/Complete-green) |
+
 
 ## Setting Up Koop
 **Important**: This repo has an INCOMPLETE config.json file and does not include neccessary modules. Contact the owner of this repo for the complete config.json file which will give the application access to utilize the service account.
@@ -59,7 +61,7 @@ You might be wondering, how can I find the unique project ID (UID) for a specifi
 - **projects** is the literal term used to request projects at this URL (see example below)
   
 Complete Example (*this link will be replaced by the production environment link*):
-[`http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query`](http://localhost:8080/opengroundprojects/rest/services/projects::table/FeatureServer/0/query)
+[`http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query`](http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query)
 
 ### Example Data
 This repo also contains an example JSON response from the borings provider using the project link above. That file is found in `example-data/boringData.txt`.
