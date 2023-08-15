@@ -49,8 +49,11 @@ All data can be viewed and accessed using a web browser (Google Chrome is recomm
 - **PROJECT_UID** is a unique identifier (UID) for a project. To lookup the UID for a specific project, use this link: *more to come*
 - **DATA_TABLE** is the OpenGround data table information you want to access. Currently, the provider is only configured to handle the "LocationDetails" input, however future version may expand functionality as needed
 
-Complete Example (*this link will be replaced by the production environment link*):
-[`http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`](http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query)
+Feature Class: [`http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query`](http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e46d-4a7a-8e67-f7c9501169d0::LocationDetails/FeatureServer/0/query)
+
+Flat JSON: [`http://localhost:8080/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/flat`](http://localhost:8080/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/flat)
+
+Table: In Development
 
 ### Accessing Project Data URL
 You might be wondering, how can I find the unique project ID (UID) for a specific project? This repo provider also contains a sub-provider which pulls all existing projects and their UID into a table which a user can then access and find the needed UID. To access this link, use the following URL (*this link will be replaced by the production environment link*): 
@@ -60,8 +63,11 @@ You might be wondering, how can I find the unique project ID (UID) for a specifi
 - **8080** is the default port the server will listen on. This is configurable in `config/default.js`
 - **projects** is the literal term used to request projects at this URL (see example below)
   
-Complete Example (*this link will be replaced by the production environment link*):
-[`http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query`](http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query)
+Feature Class: [`http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query`](http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query)
+
+Flat JSON: [`http://localhost:8080/opengroundprojects/projects/flat`](http://localhost:8080/opengroundprojects/projects/flat)
+
+Table: In Development
 
 ### Example Data
 This repo also contains an example JSON response from the borings provider using the project link above. That file is found in `example-data/boringData.txt`.
