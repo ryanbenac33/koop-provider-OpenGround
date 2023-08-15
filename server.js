@@ -15,7 +15,7 @@
 process.on('SIGINT', () => process.exit(0))
 process.on('SIGTERM', () => process.exit(0))
 
-const consoleSeparator = "--------------------------------------------------------------------"
+const consoleSeparator = "----------------------------------------------------------------------------"
 
 console.log(`\n${consoleSeparator}`)
 console.log(`Registering Outputs\n`)
@@ -36,15 +36,18 @@ const flat = require('./koop-output-flat')
 koop.register(flat)
 console.log(`\nOutputs Registered Successfully`)
 
+/////////////////////////////////////////////////////////////////////////////////////////////
 console.log(`${consoleSeparator}\n`)
 
 const dataprovider = require('./')
 const projectprovider = require('./provider-project/')
 
 koop.register(dataprovider)
+console.log('\n')
 koop.register(projectprovider)
 
 console.log(`\nProviders Registered Successfully`)
+/////////////////////////////////////////////////////////////////////////////////////////////
 
 // Start listening for HTTP traffic
 const config = require('config')
@@ -85,10 +88,17 @@ For more docs visit: https://koopjs.github.io/docs/specs/provider/
 To find providers visit: https://www.npmjs.com/search?q=koop+provider
 To see version information: http://localhost:8080/opengroundcloud/rest/info
 
-View boring data in your browser: http://localhost:${port}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query
+************************************************************************************
+View boring data in your browser:
+Feature Class: http://localhost:${port}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query
+Flat JSON:     http://localhost:${port}/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/flat
+Table:         NA
 
-View the projects at this link: http://localhost:${port}/opengroundprojects/projects/flat
-http://localhost:${port}/opengroundprojects/rest/services/projects/FeatureServer/0/query
+View the projects in your browser: 
+Feature Class: http://localhost:${port}/opengroundprojects/rest/services/projects/FeatureServer/0/query
+Flat JSON:     http://localhost:${port}/opengroundprojects/projects/flat
+Table:         NA
+************************************************************************************
 
 Press control + c to exit
 `
