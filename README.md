@@ -31,6 +31,7 @@ This provider is in the later stages of development and will soon be moving to a
 | Wire up machine credentials to access USACE cloud | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | Test Koop on a CorpsNet Node.js server | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | QA check data and locations | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
+| Long term testing | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 
 
 ## Setting Up Koop
