@@ -55,7 +55,7 @@ Feature Class: [`http://localhost:8080/opengroundcloud/rest/services/c613f0c4-e4
 
 Flat JSON: [`http://localhost:8080/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/flat`](http://localhost:8080/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/flat)
 
-Table: In Development
+Table: [`http://localhost:8080/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/table`](http://localhost:8080/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/table)
 
 ### Accessing Project Data URL
 You might be wondering, how can I find the unique project ID (UID) for a specific project? This repo provider also contains a sub-provider which pulls all existing projects and their UID into a table which a user can then access and find the needed UID. To access this link, use the following URL (*this link will be replaced by the production environment link*): 
@@ -71,7 +71,7 @@ Feature Class: [`http://localhost:8080/opengroundprojects/rest/services/projects
 
 Flat JSON: [`http://localhost:8080/opengroundprojects/projects/flat`](http://localhost:8080/opengroundprojects/projects/flat)
 
-Table: In Development
+Table: [`http://localhost:8080/opengroundprojects/projects/table`](http://localhost:8080/opengroundprojects/projects/table)
 
 ### Example Data
 This repo also contains an example JSON response from the borings provider using the project link above. That file is found in `example-data/boringData.txt`.
