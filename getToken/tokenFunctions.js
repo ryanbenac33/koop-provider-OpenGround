@@ -76,7 +76,7 @@ function getBody () {
 
 // get headers for data api requests
 function getHeaders(token) {
-    const instanceID = config.ogcconnector.sand_instanceID
+    const instanceID = config.ogcconnector.instanceID
     const keynetixCloud = config.ogcconnector.keynetixCloud
     const contentType = config.ogcconnector.contentType
 
@@ -91,7 +91,7 @@ function getHeaders(token) {
 // check config for error
 function configCheck() {
     // throw error if required configuration definition variables not defined
-    if (!config.ogcconnector.sand_instanceID) throw new Error(`CONFIG ERROR: Instance ID must be defined in the config.`)
+    if (!config.ogcconnector.instanceID) throw new Error(`CONFIG ERROR: Instance ID must be defined in the config.`)
     if (!config.ogcconnector.keynetixCloud) throw new Error(`CONFIG ERROR: Keynetix Cloud Instance must be defined in the config.`)
     if (!config.ogcconnector.contentType) throw new Error(`CONFIG ERROR: Content type must be defined in the config.`)
     if (!config.ogcconnector.token) throw new Error(`CONFIG ERROR: Token must be defined in the config.`)
