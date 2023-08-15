@@ -34,6 +34,10 @@ const koop = new Koop()
 /* Register providers */
 const flat = require('./koop-output-flat')
 koop.register(flat)
+
+const tableOut = require('./koop-output-table')
+koop.register(tableOut)
+
 console.log(`\nOutputs Registered Successfully`)
 
 /////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,12 +96,12 @@ To see version information: http://localhost:8080/opengroundcloud/rest/info
 View boring data in your browser:
 Feature Class: http://localhost:${port}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query
 Flat JSON:     http://localhost:${port}/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/flat
-Table:         NA
+Table:         http://localhost:${port}/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/table
 
 View the projects in your browser: 
 Feature Class: http://localhost:${port}/opengroundprojects/rest/services/projects/FeatureServer/0/query
 Flat JSON:     http://localhost:${port}/opengroundprojects/projects/flat
-Table:         NA
+Table:         http://localhost:${port}/opengroundprojects/projects/table
 ************************************************************************************
 
 Press control + c to exit

@@ -1,0 +1,9 @@
+{
+    "name": "koop-output-table",
+    "version": "0.1.0",
+    "description": "Koop output-plugin for table view of data",
+    "main": "index.js",
+    "directories": {
+      "lib": "lib"
+    }
+}
