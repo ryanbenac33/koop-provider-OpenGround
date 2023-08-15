@@ -14,3 +14,5 @@ Server.js
   best example reference: https://github.com/koopjs/koop-provider-google-fusion-tables/blob/master/server.js
   about ngrok: https://medium.com/bigcommerce-developer-blog/how-to-test-app-authentication-locally-with-ngrok-149150bfe4cf
 
+Sandbox Instance ID: 57ab7d21-5ff3-49fc-8dfd-fa41e75121da
+USACE Instance ID: 570c1f2b-aed1-4791-a20b-4b8ac8cdd2c8
