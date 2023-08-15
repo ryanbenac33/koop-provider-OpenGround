@@ -1,5 +1,5 @@
 # Koop-Provider-OpenGround
-![Static Badge](https://img.shields.io/badge/Koop--Provider--OpenGround-v1.5.0-blue)
+![Static Badge](https://img.shields.io/badge/Koop--Provider--OpenGround-v1.6.0-blue)
 
 <ins>**Defining the problem**</ins>: Inability to easily incorporate up-to-date boring data hosted on OpenGround Cloud with project GIS viewers
 
@@ -28,8 +28,8 @@ This provider is in the later stages of development and will soon be moving to a
 | Gain access to Node JS server | ![Static Badge](https://img.shields.io/badge/In_Progress-yellow) |
 | Test Koop on a CorpsNet Node.js server | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | QA check data and locations | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
-| Add table and JSON output service for projects | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
-| Correctly configure projects provider | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
+| Add table and JSON output service | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
+| Correctly configure projects provider | ![Static Badge](https://img.shields.io/badge/Complete-green) |
 
 ## Setting Up Koop
 **Important**: This repo has an INCOMPLETE config.json file and does not include neccessary modules. Contact the owner of this repo for the complete config.json file which will give the application access to utilize the service account.
@@ -43,7 +43,7 @@ All data can be viewed and accessed using a web browser (Google Chrome is recomm
 
 `http://localhost:8080/opengroundcloud/rest/services/PROJECT_UID::DATA_TABLE/FeatureServer/0/query`
 
-- **8080** is the default port the server will listen on. This is configurable in `server.js`
+- **8080** is the default port the server will listen on. This is configurable in `config/default.js`
 - **PROJECT_UID** is a unique identifier (UID) for a project. To lookup the UID for a specific project, use this link: *more to come*
 - **DATA_TABLE** is the OpenGround data table information you want to access. Currently, the provider is only configured to handle the "LocationDetails" input, however future version may expand functionality as needed
 
@@ -53,10 +53,13 @@ Complete Example (*this link will be replaced by the production environment link
 ### Accessing Project Data URL
 You might be wondering, how can I find the unique project ID (UID) for a specific project? This repo provider also contains a sub-provider which pulls all existing projects and their UID into a table which a user can then access and find the needed UID. To access this link, use the following URL (*this link will be replaced by the production environment link*): 
 
-`http://localhost:8080/opengroundprojects/rest/services/projects::OUTPUT/FeatureServer/0/query`
+`http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query`
 
+- **8080** is the default port the server will listen on. This is configurable in `config/default.js`
+- **projects** is the literal term used to request projects at this URL (see example below)
+  
 Complete Example (*this link will be replaced by the production environment link*):
-[`http://localhost:8080/opengroundprojects/rest/services/projects::table/FeatureServer/0/query`](http://localhost:8080/opengroundprojects/rest/services/projects::table/FeatureServer/0/query)
+[`http://localhost:8080/opengroundprojects/rest/services/projects/FeatureServer/0/query`](http://localhost:8080/opengroundprojects/rest/services/projects::table/FeatureServer/0/query)
 
 ### Example Data
 This repo also contains an example JSON response from the borings provider using the project link above. That file is found in `example-data/boringData.txt`.
