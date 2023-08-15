@@ -28,7 +28,7 @@ This provider is in the later stages of development and will soon be moving to a
 | Create connection to AGOL feature class | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
 | Gain access to Node JS server | ![Static Badge](https://img.shields.io/badge/In_Progress-yellow) |
 | Add table and JSON output service | ![Static Badge](https://img.shields.io/badge/In_Development-yellow) |
-| Wire up machine credentials to access UDACE cloud | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
+| Wire up machine credentials to access USACE cloud | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | Test Koop on a CorpsNet Node.js server | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | QA check data and locations | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 
