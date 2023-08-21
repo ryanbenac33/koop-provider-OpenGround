@@ -1,3 +1,9 @@
+/*
+  //Author: Ryan Benac
+  //USACE MVR ECG
+  //Last Updated: 8/20/2023
+*/
+
 const winnow = require('@koopjs/winnow')
 const _ = require('lodash')
 const flatten = require('flat')
