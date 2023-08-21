@@ -12,6 +12,7 @@
     "@koopjs/koop-core": "^9.1.0",
     "@koopjs/provider-github": "^3.0.0",
     "flat": "^5.0.2",
+    "json-to-table": "^4.2.1",
     "ngrok": "^5.0.0-beta.2",
     "node-fetch": "^3.3.2"
   }
