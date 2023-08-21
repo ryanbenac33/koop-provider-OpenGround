@@ -93,12 +93,12 @@ To find providers visit: https://www.npmjs.com/search?q=koop+provider
 To see version information: http://localhost:8080/opengroundcloud/rest/info
 
 ************************************************************************************
-View boring data in your browser:
+View boring data in your browser at these rest endpoints:
 Feature Class: http://localhost:${port}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query
 Flat JSON:     http://localhost:${port}/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/flat
 Table:         http://localhost:${port}/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/table
 
-View the projects in your browser: 
+View the projects in your browser at these rest endpoints: 
 Feature Class: http://localhost:${port}/opengroundprojects/rest/services/projects/FeatureServer/0/query
 Flat JSON:     http://localhost:${port}/opengroundprojects/projects/flat
 Table:         http://localhost:${port}/opengroundprojects/projects/table
