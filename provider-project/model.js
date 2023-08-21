@@ -105,8 +105,12 @@ function fixProjectInfo (json) {
   // iterate over JSON to get actual name
   for (var i = 0; i < count; i++) {
     var currentObj = json[i]
-    currentObj['BoringName'] = currentObj['DataFields'][0]['Value']
-    
+    currentObj['ProjectName'] = currentObj['DataFields'][0]['Value']
+
+    const id = currentObj['Id']
+
+    currentObj['AccessURL'] = `<a href ="http://localhost:8080/opengroundcloud/rest/services/${id}::LocationDetails/FeatureServer/0/query">http://localhost:8080/opengroundcloud/rest/services/${id}::LocationDetails/FeatureServer/0/query</a>`
+
     // remove unneccessary JSON fields
     delete currentObj['DataFields']
     delete currentObj['Group']
