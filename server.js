@@ -35,7 +35,7 @@ const koop = new Koop()
 const flat = require('./koop-output-flat')
 koop.register(flat)
 
-const tableOut = require('./koop-output-table')
+const tableOut = require('./Koop Output Table')
 koop.register(tableOut)
 
 console.log(`\nOutputs Registered Successfully`)
