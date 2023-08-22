@@ -6,7 +6,7 @@
 <ins>**Creating the solution**</ins>: Koop provider that pulls the needed data from the OpenGround database, translates it to an ESRI readable format, then hosts it at a link accessible by a feature class
 
 ## What is Koop?
-Koop is a JavaScript toolkit built on Node.js for connecting spatial APIs — in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). There are also several great conceptual diagrams in [this presentation](https://www.esri.com/content/dam/esrisites/en-us/events/conferences/2020/developer-summit/use-koop-to-connect-any-data-source-to-arcgis.pdf).
+Koop is a JavaScript toolkit built on Node.js for connecting spatial APIs — in this case connecting OpenGround Cloud boring data to ArcGIS Pro and online ESRI viewers. More information about Koop can be found on their [main GitHub page](https://koopjs.github.io/). There are also several great conceptual diagrams in [this presentation](https://www.esri.com/content/dam/esrisites/en-us/events/conferences/2020/developer-summit/use-koop-to-connect-any-data-source-to-arcgis.pdf). The ultimate purpose of Koop is to allow for interoperable systems.
 
 **What is a Koop Provider?** A "provider" is a term used by Koop to describe a set of code that requests data and converts it to GeoJSON. All API requesting, data translating, and hosting are accomplished behind the scenes of this Koop-OpenGround-Provider running on a Node.js server.
 
