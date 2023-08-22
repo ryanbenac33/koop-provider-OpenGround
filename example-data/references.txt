@@ -1,6 +1,6 @@
 This file contains links to all reference documents and code chunks utilized
 
-Koop-Outpu-Table
+Koop-Output-Table
   How to create HTML table from JSON: https://stackoverflow.com/questions/51188542/how-to-build-a-dynamic-html-table-from-json-data-using-node-js
   Search an HTML table: https://www.geeksforgeeks.org/how-to-perform-a-real-time-search-and-filter-on-a-html-table/
 
