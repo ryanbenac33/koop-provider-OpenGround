@@ -12,6 +12,7 @@ Koop is a JavaScript toolkit built on Node.js for connecting spatial APIs — in
 
 **How is the OpenGround Data Accessed?** All data is hosted on a USACE cloud, Bentley owned server. To access the data, we must provide authentication and a request to the OpenGround API. This allows us to request the data we need from the API and have it returned to us in a usable, JSON format. More information about the API [can be found here](https://documenter.getpostman.com/view/5790939/RzfniRf1) This provider is configured using service account credentials (NOT included in this repo due to security concerns).
 
+Conceptual diagram of how Koop accesses data and serves it up for access:
 ![Koop Conceptual Diagram](example-data/new_expanded_conceptual_diagram.png)
 
 ## Current Build Status
@@ -40,6 +41,8 @@ This provider is in the later stages of development and will soon be moving to a
 **Important**: This repo has an INCOMPLETE config.json file and does not include neccessary modules. Contact the owner of this repo for the complete config.json file which will give the application access to utilize the service account.
 
 Koop runs on the Node JS platform. Clone this repo (and add the missing config file and module files specifed above) and save them to...*more to come*
+
+This provider also requires the cloning of this repo: [https://github.com/ryanbenac33/koop-output-table](https://github.com/ryanbenac33/koop-output-table) in your working folder (as a sub folder in this cloned master).
 
 Koop data is initialized on a CorpsNet server which means that any OpenGround data accessed using this middleware is only accessible to those on the CorpsNet.
 
