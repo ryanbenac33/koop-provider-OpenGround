@@ -51,10 +51,35 @@ console.log('\n')
 koop.register(projectprovider)
 
 console.log(`\nProviders Registered Successfully`)
-/////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Pull and write initial token
+const config = require('config')
+
+const {writeFile, readFile} = require("fs")
+
+// import other defined functions
+const tkn = require("./getToken/tokenFunctions")
+
+// throw error if required configuration definition variables not defined
+tkn.configCheck()
+
+const requestURL = config.ogcconnector.request_url
+
+// encode body with URL form encoding
+reqBody = tkn.encode(tkn.getBody())
+
+// call getToken to request new access token from Bentley API
+tkn.getToken(requestURL, reqBody).then(response => {newToken = response
+  // overwrite existing config token
+  const jsonPath = "./config/default.json"
+  tkn.writeToken(jsonPath, newToken)
+  // console.log("New token registered")
+})
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Start listening for HTTP traffic
-const config = require('config')
 // Set port for configuration or fall back to default
 const port = config.ogcconnector.port || 8080
 
