@@ -56,8 +56,6 @@ console.log(`\nProviders Registered Successfully`)
 //Pull and write initial token
 const config = require('config')
 
-const {writeFile, readFile} = require("fs")
-
 // import other defined functions
 const tkn = require("./getToken/tokenFunctions")
 
@@ -96,10 +94,14 @@ const devStatus = config.ogcconnector.devMode
 // start ngrok if in development mode
 if(devStatus) {
   // set up ngrok testing for https connection to ESRI
+  // if it stops working delete C:\Users\b5edgr9b\AppData\Local\ngrok
   const ngrok = require('ngrok')
 
-  ngrok.connect({
-    proto: "http",
+  const authToken = config.ogcconnector.ngrok_authtoken
+  //ngrok.authtoken("2TlHLOwWnauTPeQM7i1uPlekXYE_3vp6BUT9ZRpUxwMKvFPR8")
+  
+  async function startConnection() {const url = await ngrok.connect({
+    proto: 'http',
     addr: port,
     }).then(url => {
     console.log(`\nngrok is running at ${url}`)
@@ -108,7 +110,9 @@ if(devStatus) {
     console.log(`NOTE: You can only access the ngrok link when DISCONNECTED from the CORPSNET`)
     console.log(`\nPress control + c to exit`)
     console.log(consoleSeparator)
-})
+  })}
+  
+  startConnection()
 }
 
 const message = `
