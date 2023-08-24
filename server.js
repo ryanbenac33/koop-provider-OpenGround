@@ -95,6 +95,7 @@ const devStatus = config.ogcconnector.devMode
 if(devStatus) {
   // set up ngrok testing for https connection to ESRI
   // if it stops working delete C:\Users\b5edgr9b\AppData\Local\ngrok
+  // cmd taskkill /f /im ngrok.exe
   const ngrok = require('ngrok')
 
   const authToken = config.ogcconnector.ngrok_authtoken
@@ -103,6 +104,7 @@ if(devStatus) {
   async function startConnection() {const url = await ngrok.connect({
     proto: 'http',
     addr: port,
+    authtoken: authToken,
     }).then(url => {
     console.log(`\nngrok is running at ${url}`)
     console.log(`Check the status of ngrok at: http://127.0.0.1:4040/status`)
