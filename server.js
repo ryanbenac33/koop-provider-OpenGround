@@ -88,35 +88,6 @@ if (process.env.LAMBDA) {
   koop.server.listen(port)
 }
 
-// get development mode status
-const devStatus = config.ogcconnector.devMode
-
-// start ngrok if in development mode
-if(devStatus) {
-  // set up ngrok testing for https connection to ESRI
-  // if it stops working delete C:\Users\b5edgr9b\AppData\Local\ngrok
-  // cmd taskkill /f /im ngrok.exe
-  const ngrok = require('ngrok')
-
-  const authToken = config.ogcconnector.ngrok_authtoken
-  //ngrok.authtoken("2TlHLOwWnauTPeQM7i1uPlekXYE_3vp6BUT9ZRpUxwMKvFPR8")
-  
-  async function startConnection() {const url = await ngrok.connect({
-    proto: 'http',
-    addr: port,
-    authtoken: authToken,
-    }).then(url => {
-    console.log(`\nngrok is running at ${url}`)
-    console.log(`Check the status of ngrok at: http://127.0.0.1:4040/status`)
-    console.log(`\nAccess boring https:// ngrok link at: ${url}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query`)
-    console.log(`NOTE: You can only access the ngrok link when DISCONNECTED from the CORPSNET`)
-    console.log(`\nPress control + c to exit`)
-    console.log(consoleSeparator)
-  })}
-  
-  startConnection()
-}
-
 const message = `
 Koop OpenGround Cloud Data Provider listening on ${port}
 For more docs visit: https://koopjs.github.io/docs/specs/provider/
