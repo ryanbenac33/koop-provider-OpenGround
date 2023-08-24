@@ -47,7 +47,7 @@ This provider also requires the cloning of this repo: [https://github.com/ryanbe
 Koop data is initialized on a CorpsNet server which means that any OpenGround data accessed using this middleware is only accessible to those on the CorpsNet.
 
 ### Accessing Boring Data URL
-All data can be viewed and accessed using a web browser (Google Chrome is recommended). Data is requested and accessed by correctly formatting a URL link in the following format (*this link will be replaced by the production environment link*):
+This Koop Provider actually ships with two providers: one for boring data and one for project data. All data can be viewed and accessed using a web browser (Google Chrome is recommended). Data is requested and accessed by correctly formatting a URL link in the following format (*this link will be replaced by the production environment link*):
 
 `http://localhost:8080/opengroundcloud/rest/services/PROJECT_UID::DATA_TABLE/FeatureServer/0/query`
 
