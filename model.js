@@ -10,7 +10,6 @@
   This file is required. It must export a class with at least one public function called `getData`
  */
 //const request = require('request').defaults({ json: true })
-const fetch = import('node-fetch') // requesting from API
 const config = require('config')
 const _ = require('lodash') // dealing with arrays and numbers
 const crossFetch = require('cross-fetch') // fetch function fix for node js
