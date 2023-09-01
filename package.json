@@ -11,6 +11,7 @@
   "dependencies": {
     "@koopjs/koop-core": "^9.1.0",
     "@koopjs/provider-github": "^3.0.0",
+    "cheerio": "^1.0.0-rc.12",
     "flat": "^5.0.2",
     "json-to-table": "^4.2.1",
     "ngrok": "^5.0.0-beta.2",
