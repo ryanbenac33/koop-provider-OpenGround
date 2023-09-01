@@ -40,18 +40,20 @@ koop.register(tableOut)
 
 console.log(`\nOutputs Registered Successfully`)
 
-/////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 console.log(`${consoleSeparator}\n`)
 
 const dataprovider = require('./')
 const projectprovider = require('./provider-project/')
+const riverGagesProvider = require("./koop-provider-RiverGages")
 
 koop.register(dataprovider)
 console.log('\n')
 koop.register(projectprovider)
+console.log('\n')
+koop.register(riverGagesProvider)
 
 console.log(`\nProviders Registered Successfully`)
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Pull and write initial token
 const config = require('config')
@@ -89,12 +91,13 @@ if (process.env.LAMBDA) {
 }
 
 const message = `
-Koop OpenGround Cloud Data Provider listening on ${port}
+Koop Server listening on ${port}
 For more docs visit: https://koopjs.github.io/docs/specs/provider/
 To find providers visit: https://www.npmjs.com/search?q=koop+provider
 To see version information: http://localhost:8080/opengroundcloud/rest/info
+                            http://localhost:8080/rivergages/rest/info
 
-************************************************************************************
+******************************OpenGround Cloud**************************************
 View boring data in your browser at these rest endpoints:
 Feature Class: http://localhost:${port}/opengroundcloud/rest/services/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/FeatureServer/0/query
 Flat JSON:     http://localhost:${port}/opengroundcloud/77fd1c62-18d4-4bd5-ba58-ae1d01382c56::LocationDetails/flat
@@ -104,6 +107,14 @@ View the projects in your browser at these rest endpoints:
 Feature Class: http://localhost:${port}/opengroundprojects/rest/services/projects/FeatureServer/0/query
 Flat JSON:     http://localhost:${port}/opengroundprojects/projects/flat
 Table:         http://localhost:${port}/opengroundprojects/projects/table
+
+
+*********************************RiverGages*****************************************
+View RiverGages in your browser at these rest endpoints:
+Feature Class: http://localhost:${port}/rivergages/rest/services/PELI4::7::elevation/FeatureServer/0/query
+Flat JSON:     http://localhost:${port}/rivergages/PELI4::7::elevation/flat
+Table:         http://localhost:${port}/rivergages/PELI4::7::elevation/table
+
 ************************************************************************************
 
 Press control + c to exit
