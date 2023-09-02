@@ -44,14 +44,20 @@ console.log(`\nOutputs Registered Successfully`)
 console.log(`${consoleSeparator}\n`)
 
 const dataprovider = require('./')
-const projectprovider = require('./provider-project/')
-const riverGagesProvider = require("./koop-provider-RiverGages")
-
 koop.register(dataprovider)
 console.log('\n')
+
+const projectprovider = require('./provider-project/')
 koop.register(projectprovider)
 console.log('\n')
+
+const riverGagesProvider = require("./koop-provider-RiverGages")
 koop.register(riverGagesProvider)
+console.log('\n')
+
+const gagePicker = require("./koop-provider-RiverGages/sub-provider-gagePicker")
+koop.register(gagePicker)
+console.log('\n')
 
 console.log(`\nProviders Registered Successfully`)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
