@@ -36,6 +36,17 @@ This provider is in the later stages of development and will soon be moving to a
 | QA check data and locations | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 | Long term testing | ![Static Badge](https://img.shields.io/badge/Not_Started-red) |
 
+## About This Repository
+This repository is different from other Koop providers. It is currently setup with a server that registers the following:
+``` javascript
+const flat = require('./koop-output-flat') // this was manually imported to grab a fixed version
+const tableOut = require('./koop-output-table') //https://github.com/ryanbenac33/koop-output-table
+
+const riverGagesProvider = require("./koop-provider-RiverGages") //https://github.com/ryanbenac33/koop-provider-RiverGages
+const gagePicker = require("./koop-provider-RiverGages/sub-provider-gagePicker") //https://github.com/ryanbenac33/koop-provider-RiverGages -- this is a sub provider for locations
+```
+These are being developed for deployment. Once deployed, this repository will be reorganized to include only code for the OpenGround provider.
+
 
 ## Setting Up Koop
 **Important**: This repo has an INCOMPLETE config.json file and does not include neccessary modules. Contact the owner of this repo for the complete config.json file which will give the application access to utilize the service account.
