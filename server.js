@@ -47,7 +47,7 @@ const dataprovider = require('./')
 koop.register(dataprovider)
 console.log('\n')
 
-const projectprovider = require('./provider-project/')
+const projectprovider = require('./provider-project')
 koop.register(projectprovider)
 console.log('\n')
 
