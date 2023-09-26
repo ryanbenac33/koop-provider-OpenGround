@@ -51,11 +51,11 @@ const projectprovider = require('./provider-project')
 koop.register(projectprovider)
 console.log('\n')
 
-const riverGagesProvider = require("./koop-provider-RiverGages")
+const riverGagesProvider = require("./koop-provider-RiverGages/index.js")
 koop.register(riverGagesProvider)
 console.log('\n')
 
-const gagePicker = require("./koop-provider-RiverGages/sub-provider-gagePicker")
+const gagePicker = require("./koop-provider-RiverGages/picker-index.js")
 koop.register(gagePicker)
 console.log('\n')
 
