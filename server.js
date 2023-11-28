@@ -19,8 +19,10 @@ const consoleSeparator = "------------------------------------------------------
 
 console.log(`\n${consoleSeparator}`)
 console.log(`Registering Outputs\n`)
+
 // Initialize Koop
 const Koop = require('@koopjs/koop-core')
+const serverless = require("serverless-http")
 const koop = new Koop()
 
 /* Optional - register additional output-services */
@@ -49,14 +51,6 @@ console.log('\n')
 
 const projectprovider = require('./provider-project')
 koop.register(projectprovider)
-console.log('\n')
-
-const riverGagesProvider = require("./koop-provider-RiverGages/index.js")
-koop.register(riverGagesProvider)
-console.log('\n')
-
-const gagePicker = require("./koop-provider-RiverGages/picker-index.js")
-koop.register(gagePicker)
 console.log('\n')
 
 console.log(`\nProviders Registered Successfully`)
@@ -101,7 +95,6 @@ Koop Server listening on ${port}
 For more docs visit: https://koopjs.github.io/docs/specs/provider/
 To find providers visit: https://www.npmjs.com/search?q=koop+provider
 To see version information: http://localhost:8080/opengroundcloud/rest/info
-                            http://localhost:8080/rivergages/rest/info
 
 ******************************OpenGround Cloud**************************************
 View boring data in your browser at these rest endpoints:
@@ -113,13 +106,6 @@ View the projects in your browser at these rest endpoints:
 Feature Class: http://localhost:${port}/opengroundprojects/rest/services/projects/FeatureServer/0/query
 Flat JSON:     http://localhost:${port}/opengroundprojects/projects/flat
 Table:         http://localhost:${port}/opengroundprojects/projects/table
-
-
-*********************************RiverGages*****************************************
-View RiverGages in your browser at these rest endpoints:
-Feature Class: http://localhost:${port}/rivergages/rest/services/PELI4::7::elevation/FeatureServer/0/query
-Flat JSON:     http://localhost:${port}/rivergages/PELI4::7::elevation/flat
-Table:         http://localhost:${port}/rivergages/PELI4::7::elevation/table
 
 ************************************************************************************
 

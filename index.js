@@ -1,4 +1,11 @@
 const pkg = require('./package.json')
+
+//const Koop = require("koop");
+//const serverless = require("serverless-http");
+
+// initiate a Koop app
+//const koop = new Koop();
+
 const provider = {
     name: 'opengroundcloud',
     type: 'provider',
@@ -10,4 +17,6 @@ const provider = {
     Controller: pkg.Controller,
   }
 
-  module.exports = provider
+module.exports = provider
+
+//module.exports.handler = serverless(koop.server);

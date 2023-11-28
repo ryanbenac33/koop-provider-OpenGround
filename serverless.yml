@@ -1,0 +1,20 @@
+service: koop-serverless-example
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+functions:
+  # Each API should have one corresponding function
+  get-data:
+    handler: src/index.handler
+    events:
+      # The "http" event defines an API at the API Gateway
+      - http:
+          path: /my-provider/{host}/FeatureServer/0
+          method: get
+          request:
+            # Each parameter and query string need to be explicitly specified
+            parameters:
+              paths:
+                host: true
